@@ -10,6 +10,45 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "mysql"
   url      = env("DATABASE_URL")
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  userName  String   @unique
+  email     String   @unique
+  password  String
+  threads   Thread[]
+  posts     Post[]
+  createdAt DateTime @default(now())
+}
+
+model Category {
+  id        Int      @id @default(autoincrement())
+  name      String
+  slug      String   @unique
+  description String
+  threads   Thread[]
+}
+
+model Thread {
+  id          Int      @id @default(autoincrement())
+  title       String
+  author      User     @relation(fields: [authorId], references: [id])
+  authorId    Int
+  category    Category @relation(fields: [categoryId], references: [id])
+  categoryId  Int
+  posts       Post[]
+  createdAt   DateTime @default(now())
+}
+
+model Post {
+  id        Int      @id @default(autoincrement())
+  content   String
+  author    User     @relation(fields: [authorId], references: [id])
+  authorId  Int
+  thread    Thread   @relation(fields: [threadId], references: [id])
+  threadId  Int
+  createdAt DateTime @default(now())
 }
