@@ -3,6 +3,7 @@ import z from 'zod'
 import { prisma } from '@/database/prisma'
 import bcrypt from 'bcryptjs'
 import { cookies } from 'next/headers'
+import * as jose from 'jose'
 import { LoginShema } from '../validationShema/loginShema'
 
 export default async function LoginUser(prevState: unknown, formData: FormData) {

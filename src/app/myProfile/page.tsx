@@ -1,5 +1,3 @@
-'use client'
-
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Label } from '@/components/ui/label'
 import { Input } from '@/components/ui/input'
@@ -7,9 +5,11 @@ import { Button } from '@/components/ui/button'
 import { useState } from 'react'
 import { User, Mail, Lock, MessageSquare, FileText } from 'lucide-react'
 import UpdateProfileForm from '@/components/updateProfileForm'
+import { cookies } from 'next/headers'
 
 export default function ProfilePage() {
-  // Local state (später mit Server Actions ersetzen)
+  const cookieStore = cookies()
+  //const token = cookieStore.get('session').value
 
   // Demo-Daten (hier später echte User-Daten reinladen)
   const userName = 'DavidC'
