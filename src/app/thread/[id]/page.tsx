@@ -1,16 +1,18 @@
-import PostCard from '@/components/PostCard'
+import PostCard from '@/app/thread/PostCard'
+
 import { prisma } from '@/database/prisma'
-import Link from 'next/link'
+
 import { notFound } from 'next/navigation'
+import AnswerPostForm from '../answerPostForm'
 
 type Props = {
   params: {
-    id: number
+    id: string
   }
 }
 
 export default async function PostPage({ params }: Props) {
-  const id = Number(params.id)
+  const id = params.id
   const thread = await prisma.thread.findUnique({
     where: { id },
     include: {
@@ -27,25 +29,28 @@ export default async function PostPage({ params }: Props) {
   if (!thread) return notFound()
 
   return (
-    <main className="mx-auto max-w-2xl space-y-6 p-6">
-      <header>
+    <div className="mx-auto max-w-3xl space-y-6 p-6">
+      <div>
         <h1 className="text-3xl font-bold text-amber-800">{thread.title}</h1>
         <p className="text-sm text-gray-500">
-          gestartet von {thread.author.userName} –{' '}
+          gestartet von {thread.author.name} –{' '}
           {new Date(thread.createdAt).toLocaleDateString('de-DE')}
         </p>
-      </header>
+      </div>
 
-      <section className="space-y-4">
+      <div className="space-y-4">
         {thread.posts.map((post) => (
           <PostCard
             key={post.id}
             content={post.content}
-            authorName={post.author.userName}
+            authorName={post.author.name}
             createdAt={post.createdAt}
           />
         ))}
-      </section>
-    </main>
+      </div>
+      <div className="mt-20">
+        <AnswerPostForm threadId={thread.id}></AnswerPostForm>
+      </div>
+    </div>
   )
 }

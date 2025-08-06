@@ -17,7 +17,7 @@ export default function Hero() {
 
           <div className="mt-6 flex flex-col justify-center gap-4 sm:flex-row lg:justify-start">
             <Button asChild className="bg-amber-800 text-white hover:bg-amber-900">
-              <Link href="#categories">Einloggen</Link>
+              <Link href="/login">Einloggen</Link>
             </Button>
             <Button
               asChild

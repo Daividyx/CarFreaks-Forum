@@ -4,7 +4,7 @@ import * as z from 'zod'
 //Vergleicht auch ob beide Passwörter gleich sind
 export const createUserShema = z
   .object({
-    userName: z.string().trim().min(6, ' Der benutzername muss mindestens 6 Zeichen lang sein'),
+    name: z.string().trim().min(6, ' Der benutzername muss mindestens 6 Zeichen lang sein'),
     email: z.email('Bitte gib eine gültige Email Adresse ein'),
     password: z.string().refine(
       (val) => {

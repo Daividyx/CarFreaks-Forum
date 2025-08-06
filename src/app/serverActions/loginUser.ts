@@ -1,3 +1,4 @@
+'use server'
 import z from 'zod'
 
 import { prisma } from '@/database/prisma'
@@ -5,8 +6,10 @@ import bcrypt from 'bcryptjs'
 import { cookies } from 'next/headers'
 import * as jose from 'jose'
 import { LoginShema } from '../validationShema/loginShema'
+import { auth } from '@/lib/auth'
+import { authClient } from '@/lib/auth-client'
 
-export default async function LoginUser(prevState: unknown, formData: FormData) {
+export async function LoginUser(prevState: unknown, formData: FormData) {
   const data = {
     email: formData.get('email')?.toString(),
     password: formData.get('password')?.toString(),
@@ -19,6 +22,8 @@ export default async function LoginUser(prevState: unknown, formData: FormData) 
       errors: z.flattenError(parsed.error).fieldErrors,
     }
   }
+  // old without BetterAuth
+  /*
 
   const user = await prisma.user.findUnique({
     where: { email: parsed.data.email },
@@ -34,5 +39,17 @@ export default async function LoginUser(prevState: unknown, formData: FormData) 
     return {
       loginError: 'Passwort falsch',
     }
+  }
+  */
+  const { email, password } = parsed.data
+  try {
+    await auth.api.signInEmail({
+      body: {
+        email,
+        password,
+      },
+    })
+  } catch (error) {
+    return { error: 'oops. somethin bad happend :/' }
   }
 }

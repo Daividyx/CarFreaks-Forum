@@ -1,9 +1,11 @@
 // app/category/[slug]/page.tsx
 
 import { prisma } from '@/database/prisma'
-import { notFound } from 'next/navigation'
-import ThreadCard from '../../../components/ThreadCard'
+import { notFound, redirect } from 'next/navigation'
+import ThreadCard from '../../thread/ThreadCard'
 import Link from 'next/link'
+import { auth } from '@/lib/auth'
+import { headers } from 'next/headers'
 
 type Props = {
   params: {
@@ -12,6 +14,14 @@ type Props = {
 }
 
 export default async function CategoryPage({ params }: Props) {
+  // Nur eingeloggte Nutzer haben Zugriff.
+  const session = await auth.api.getSession({
+    headers: await headers(),
+  })
+
+  if (!session) {
+    redirect('/notAuthenticated')
+  }
   const slug = params.slug
   const category = await prisma.category.findUnique({
     where: { slug },
@@ -40,7 +50,7 @@ export default async function CategoryPage({ params }: Props) {
         {category.threads.map((thread) => (
           <Link href={`/thread/${thread.id}`}>
             <ThreadCard
-              authorName={thread.author.userName}
+              authorName={thread.author.name}
               threadTitle={thread.title}
               createdAt={thread.createdAt}
               postCount={thread.posts.length}

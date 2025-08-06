@@ -5,16 +5,48 @@ import { Card, CardContent, CardDescription, CardTitle } from './ui/card'
 import { Label } from './ui/label'
 import { Input } from './ui/input'
 import { Button } from './ui/button'
-import { useActionState } from 'react'
+import { ReactEventHandler, useActionState } from 'react'
 import { useState } from 'react'
-import loginUser from '@/app/serverActions/loginUser'
+import { LoginUser } from '@/app/serverActions/loginUser'
+import { authClient } from '@/lib/auth-client'
+import { useRouter } from 'next/navigation'
 
 export default function LoginForm() {
-  const [state, formAction, isPending] = useActionState(loginUser, undefined)
   const [showPassword, setShowPassword] = useState(false)
+  const [isPending, setIsPending] = useState(false)
+  const [error, setError] = useState<string | null | undefined>(null)
+  const router = useRouter()
+
+  async function handleSubmit(e: React.FormEvent) {
+    e.preventDefault()
+    setIsPending(true)
+    setError(null)
+
+    const formData = new FormData(e.currentTarget as HTMLFormElement)
+    const data = {
+      email: formData.get('email')?.toString(),
+      password: formData.get('password')?.toString(),
+    }
+    if (!data.email || !data.password) {
+      setError('Bitte Email und Passwort eingeben')
+      setIsPending(false)
+      return
+    }
+    const { error } = await authClient.signIn.email({
+      email: data.email,
+      password: data.password,
+    })
+    if (error) {
+      setError(error.message)
+      setIsPending(false)
+      return
+    }
+    setIsPending(false)
+    router.push('/myProfile')
+  }
 
   return (
-    <form action={formAction}>
+    <form onSubmit={handleSubmit}>
       <Card className="mx-auto my-20 flex max-w-md flex-col items-center">
         <CardTitle>Jetzt einloggen</CardTitle>
         <Link href="/register" className="hover:font-bold">
@@ -25,9 +57,6 @@ export default function LoginForm() {
           <div className="w-[300px] space-y-1">
             <Label className="px-2">Email Adresse</Label>
             <Input name="email" id="email" type="email" />
-            {state?.errors?.email && (
-              <p className="px-2 text-sm text-red-700">{state.errors.email}</p>
-            )}
           </div>
 
           {/* Passwort */}
@@ -49,9 +78,6 @@ export default function LoginForm() {
                 {showPassword ? 'Verbergen' : 'Anzeigen'}
               </Button>
             </div>
-            {state?.errors?.password && (
-              <p className="px-2 text-sm text-red-700">{state.errors.password}</p>
-            )}
           </div>
 
           {/* Login-Button */}
@@ -63,7 +89,7 @@ export default function LoginForm() {
             >
               Login
             </Button>
-            {state?.loginError && <p className="px-2 text-sm text-red-700">{state.loginError}</p>}
+            <p className="text-destructive pt-4">{error}</p>
           </div>
         </CardContent>
       </Card>

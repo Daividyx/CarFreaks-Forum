@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import CategoryCard from '../../components/CategoryCard'
+import CategoryCard from '../CategoryCard'
 
 type category = {
   id: number

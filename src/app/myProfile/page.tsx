@@ -1,26 +1,35 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Label } from '@/components/ui/label'
-import { Input } from '@/components/ui/input'
-import { Button } from '@/components/ui/button'
-import { useState } from 'react'
+
 import { User, Mail, Lock, MessageSquare, FileText } from 'lucide-react'
-import UpdateProfileForm from '@/components/updateProfileForm'
-import { cookies } from 'next/headers'
+import UpdateProfileForm from '@/app/myProfile/updateProfileForm'
+import { cookies, headers } from 'next/headers'
+import { auth } from '@/lib/auth'
+import { redirect } from 'next/navigation'
+import { prisma } from '@/database/prisma'
 
-export default function ProfilePage() {
-  const cookieStore = cookies()
-  //const token = cookieStore.get('session').value
+export default async function ProfilePage() {
+  const session = await auth.api.getSession({
+    headers: await headers(),
+  })
 
-  // Demo-Daten (hier später echte User-Daten reinladen)
-  const userName = 'DavidC'
-  const email = 'david@example.com'
-  const threadCount = 12
-  const postCount = 48
+  if (!session) {
+    redirect('login')
+  }
+  // User aus der Session speichern
+  const user = session.user
+  // Anzahl der Posts und Threads zählen
+  const threadCount = await prisma.thread.count({
+    where: { authorId: user.id },
+  })
+  const postCount = await prisma.post.count({
+    where: { authorId: user.id },
+  })
 
   return (
     <div className="mx-auto max-w-4xl space-y-8 py-10">
-      {/* Titel */}
-      <h1 className="text-3xl font-bold text-amber-800">Mein Profil</h1>
+      <h1 className="text-3xl font-bold text-amber-800">
+        Hallo {user.name} und schön dich hier zu sehen
+      </h1>
 
       {/* Stats */}
       <div className="grid grid-cols-2 gap-6">
@@ -38,7 +47,7 @@ export default function ProfilePage() {
 
       {/* Profil-Formular */}
 
-      <UpdateProfileForm></UpdateProfileForm>
+      <UpdateProfileForm user={user}></UpdateProfileForm>
     </div>
   )
 }

@@ -8,16 +8,67 @@ import { Button } from './ui/button'
 import { useActionState } from 'react'
 import { useState } from 'react'
 import CreateUser from '@/app/serverActions/createUser'
+import z, { ZodError } from 'zod'
+import { createUserShema } from '@/app/validationShema/createUserShema'
+import { error } from 'console'
+import { auth } from '@/lib/auth'
+import { authClient } from '@/lib/auth-client'
+import { redirect } from 'next/navigation'
 
 export default function RegisterForm() {
-  const [state, formAction, isPending] = useActionState(CreateUser, undefined)
+  //const [state, formAction, isPending] = useActionState(CreateUser, undefined)
 
   // Zustand für Passwort-Anzeigen
   const [showPassword, setShowPassword] = useState(false)
   const [showConfirmPassword, setShowConfirmPassword] = useState(false)
+  const [errors, setErrors] = useState<Record<string, string[]>>({})
+  const [isPending, setIsPending] = useState(false)
+
+  //eigene Handle Submit funktion wird vom Formular aufgerufen
+  async function handleSubmit(e: React.FormEvent) {
+    e.preventDefault() //neuladen verhindern
+    setErrors({}) // Error State clearen
+    setIsPending(true) // isPending auf true setzen
+    console.log('Submit wurde ausgelöst')
+
+    //Neues FormData Objekt erzeugen aus dem event von react
+    //Daten aus formData auslesen und speichern
+    const formData = new FormData(e.currentTarget as HTMLFormElement)
+    const data = {
+      name: formData.get('name')?.toString(),
+      email: formData.get('email')?.toString(),
+      password: formData.get('password')?.toString(),
+      confirmPassword: formData.get('confirmPassword')?.toString(),
+    }
+    console.log('Daten aus dem Formular gezogen:', data)
+    // Daten validieren mit zod
+    //Wenn Fehler, dann Errors in den State speichern
+    const parsed = createUserShema.safeParse(data)
+    console.log('parsed.success:', parsed.success)
+    console.log('parsed.error:', parsed.error)
+    if (!parsed.success) {
+      setErrors(z.flattenError(parsed.error).fieldErrors)
+      setIsPending(false)
+      return
+    }
+    console.log('parsed.data:', parsed.data)
+    console.log('better auth aufgerufen')
+    //User Account erstellen mit betterAuth
+    const { error } = await authClient.signUp.email({
+      name: parsed.data.name,
+      email: parsed.data.email,
+      password: parsed.data.password,
+    })
+    if (error) {
+      setErrors({ general: [error.message as string] })
+      setIsPending(false)
+    }
+
+    redirect('myProfile')
+  }
 
   return (
-    <form action={formAction}>
+    <form onSubmit={handleSubmit}>
       <Card className="mx-auto my-20 flex max-w-md flex-col items-center">
         <CardTitle> Jetzt registrieren</CardTitle>
         <Link href="/login" className="hover:font-bold">
@@ -27,19 +78,15 @@ export default function RegisterForm() {
           {/* Benutzername */}
           <div className="w-[300px] space-y-1">
             <Label className="px-2">Benutzername</Label>
-            <Input name="userName" id="userName" />
-            {state?.errors?.userName && (
-              <p className="px-2 text-sm text-red-700">{state?.errors?.userName}</p>
-            )}
+            <Input name="name" id="name" />
+            {errors.name?.[0] && <p className="px-2 text-sm text-red-700">{errors.name[0]}</p>}
           </div>
 
           {/* Email */}
           <div className="w-[300px] space-y-2">
             <Label className="px-2">Email Adresse</Label>
             <Input name="email" id="email" />
-            {state?.errors?.email && (
-              <p className="px-2 text-sm text-red-700">{state?.errors?.email}</p>
-            )}
+            {errors.email?.[0] && <p className="px-2 text-sm text-red-700">{errors.email[0]}</p>}
           </div>
 
           {/* Passwort */}
@@ -61,8 +108,8 @@ export default function RegisterForm() {
                 {showPassword ? 'Verbergen' : 'Anzeigen'}
               </Button>
             </div>
-            {state?.errors?.password && (
-              <p className="px-2 text-sm text-red-700">{state?.errors?.password}</p>
+            {errors.password?.[0] && (
+              <p className="px-2 text-sm text-red-700">{errors.password[0]}</p>
             )}
           </div>
 
@@ -85,8 +132,8 @@ export default function RegisterForm() {
                 {showConfirmPassword ? 'Verbergen' : 'Anzeigen'}
               </Button>
             </div>
-            {state?.errors?.confirmPassword && (
-              <p className="px-2 text-sm text-red-700">{state?.errors?.confirmPassword}</p>
+            {errors.confirmPassword?.[0] && (
+              <p className="px-2 text-sm text-red-700">{errors.confirmPassword[0]}</p>
             )}
           </div>
 
@@ -99,8 +146,8 @@ export default function RegisterForm() {
             >
               Registrieren
             </Button>
-            {state?.existingUserError && (
-              <p className="px-2 text-sm text-red-700">{state?.existingUserError}</p>
+            {errors.general?.[0] && (
+              <p className="px-2 text-sm text-red-700">{errors.general[0]}</p>
             )}
           </div>
         </CardContent>

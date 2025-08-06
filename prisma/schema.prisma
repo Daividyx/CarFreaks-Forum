@@ -1,8 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
 generator client {
   provider = "prisma-client-js"
@@ -14,41 +9,100 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+
 model User {
-  id        Int      @id @default(autoincrement())
-  userName  String   @unique
-  email     String   @unique
-  password  String
-  threads   Thread[]
-  posts     Post[]
-  createdAt DateTime @default(now())
+  id            String    @id @default(cuid())
+  name          String    @db.LongText
+  email         String
+  emailVerified Boolean @default(false)
+  role  Role    @default(USER)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  sessions      Session[]
+  accounts      Account[]
+  threads Thread[]
+  posts Post[]
+
+  @@unique([email])
+  @@map("user")
+}
+enum Role {
+  USER
+  ADMIN
 }
 
+model Session {
+  id        String   @id
+  expiresAt DateTime
+  token     String
+  createdAt DateTime
+  updatedAt DateTime
+  ipAddress String?  @db.LongText
+  userAgent String?  @db.LongText
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([token])
+  @@map("session")
+}
+
+model Account {
+  id                    String    @id
+  accountId             String    @db.LongText
+  providerId            String    @db.LongText
+  userId                String
+  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  accessToken           String?   @db.LongText
+  refreshToken          String?   @db.LongText
+  idToken               String?   @db.LongText
+  accessTokenExpiresAt  DateTime?
+  refreshTokenExpiresAt DateTime?
+  scope                 String?   @db.LongText
+  password              String?   @db.LongText
+  createdAt             DateTime
+  updatedAt             DateTime
+
+  @@map("account")
+}
+
+model Verification {
+  id         String    @id
+  identifier String    @db.LongText
+  value      String    @db.LongText
+  expiresAt  DateTime
+  createdAt  DateTime?
+  updatedAt  DateTime?
+
+  @@map("verification")
+}
+
+
 model Category {
-  id        Int      @id @default(autoincrement())
-  name      String
-  slug      String   @unique
+  id          String    @id @default(cuid())
+  name        String
+  slug        String   @unique
   description String
-  threads   Thread[]
+  threads     Thread[]
 }
 
 model Thread {
-  id          Int      @id @default(autoincrement())
+  id          String    @id @default(cuid())
   title       String
   author      User     @relation(fields: [authorId], references: [id])
-  authorId    Int
+  authorId    String
   category    Category @relation(fields: [categoryId], references: [id])
-  categoryId  Int
+  categoryId  String
   posts       Post[]
   createdAt   DateTime @default(now())
 }
 
 model Post {
-  id        Int      @id @default(autoincrement())
+  id        String    @id @default(cuid())
   content   String
   author    User     @relation(fields: [authorId], references: [id])
-  authorId  Int
+  authorId  String
   thread    Thread   @relation(fields: [threadId], references: [id])
-  threadId  Int
+  threadId  String
   createdAt DateTime @default(now())
+  likes Int @default(0)
 }

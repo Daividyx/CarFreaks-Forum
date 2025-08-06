@@ -1,5 +1,12 @@
+'use client'
+
 import Link from 'next/link'
 import { Button } from './ui/button'
+import { auth } from '@/lib/auth'
+import { headers } from 'next/headers'
+import { authClient } from '@/lib/auth-client'
+import { useEffect, useState } from 'react'
+import { useRouter } from 'next/navigation'
 
 export function AdminNavBar() {
   return (
@@ -31,6 +38,14 @@ export function AdminNavBar() {
 }
 
 export function Navbar() {
+  const { data: session } = authClient.useSession()
+  const router = useRouter()
+
+  async function handleLogout() {
+    await authClient.signOut()
+    router.push('/')
+  }
+
   return (
     <nav className="w-full bg-yellow-400">
       <div className="container mx-auto">
@@ -42,8 +57,8 @@ export function Navbar() {
             <Link className="hover:font-bold" href="/">
               Startseite
             </Link>
-            <Link className="hover:font-bold" href="/category">
-              Kategorien
+            <Link className="hover:font-bold" href="/thread/my-threads">
+              Meine Themen
             </Link>
             <Link className="hover:font-bold" href="/myProfile">
               Mein Profil
@@ -52,9 +67,13 @@ export function Navbar() {
               ADMIN
             </Link>
           </div>
-          <Button asChild>
-            <Link href="/post/new">Log in!</Link>
-          </Button>
+          {session ? (
+            <Button onClick={handleLogout}>Logout</Button>
+          ) : (
+            <Button asChild>
+              <Link href="/login">Log in!</Link>
+            </Button>
+          )}
         </div>
       </div>
     </nav>

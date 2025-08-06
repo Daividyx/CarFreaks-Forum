@@ -7,25 +7,23 @@ import { Button } from '@/components/ui/button'
 import { useState } from 'react'
 import { User, Mail, Lock, MessageSquare, FileText } from 'lucide-react'
 
-type user = {
-  userName: string
+type UserType = {
+  id: string
   email: string
-  password: string
+  emailVerified: boolean
+  name: string
+  createdAt: Date
+  updatedAt: Date
+  image?: string | null | undefined | undefined
 }
-const testUser = {
-  userName: 'David',
-  email: 'david.c@mail.com',
-  password: '123123',
+type prop = {
+  user: UserType
 }
-export default function ProfilePage() {
+
+export default function ProfilePage({ user }: prop) {
   const [showOld, setShowOld] = useState(false)
   const [showNew, setShowNew] = useState(false)
   const [showConfirm, setShowConfirm] = useState(false)
-
-  const userName = 'DavidC'
-  const email = 'david@example.com'
-  const threadCount = 12
-  const postCount = 48
 
   return (
     <div className="mx-auto max-w-4xl space-y-8 py-10">
@@ -38,13 +36,13 @@ export default function ProfilePage() {
           {/* Benutzername */}
           <div className="flex flex-col gap-2">
             <Label htmlFor="username">Benutzername</Label>
-            <Input id="username" name="username" defaultValue={testUser.userName} />
+            <Input id="username" name="username" defaultValue={user.name} />
           </div>
 
           {/* Email */}
           <div className="flex flex-col gap-2">
             <Label htmlFor="email">E-Mail-Adresse</Label>
-            <Input id="email" name="email" type="email" defaultValue={testUser.email} />
+            <Input id="email" name="email" type="email" defaultValue={user.email} />
           </div>
 
           {/* Passwort ändern */}
