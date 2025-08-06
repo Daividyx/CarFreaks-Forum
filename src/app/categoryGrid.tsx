@@ -1,23 +1,23 @@
+import CategoryCard from '@/components/cards/CategoryCard'
 import Link from 'next/link'
-import CategoryCard from '../CategoryCard'
 
 type category = {
-  id: number
+  id: string
   name: string
   description: string
   slug: string
   threads: {
-    id: number
+    id: string
     title: string
-    authorId: number
-    categoryId: number
+    authorId: string
+    categoryId: string
     createdAt: Date
     posts: {
-      id: number
+      id: string
       content: string
-      authorId: number
+      authorId: string
       createdAt: Date
-      threadId: number
+      threadId: string
     }[]
   }[]
 }

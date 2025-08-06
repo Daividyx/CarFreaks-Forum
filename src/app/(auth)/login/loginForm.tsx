@@ -1,15 +1,16 @@
 'use client'
 
 import Link from 'next/link'
-import { Card, CardContent, CardDescription, CardTitle } from './ui/card'
-import { Label } from './ui/label'
-import { Input } from './ui/input'
-import { Button } from './ui/button'
+
 import { ReactEventHandler, useActionState } from 'react'
 import { useState } from 'react'
 import { LoginUser } from '@/app/serverActions/loginUser'
 import { authClient } from '@/lib/auth-client'
 import { useRouter } from 'next/navigation'
+import { Button } from '@/components/ui/button'
+import { Card, CardTitle, CardDescription, CardContent } from '@/components/ui/card'
+import { Input } from '@/components/ui/input'
+import { Label } from '@radix-ui/react-label'
 
 export default function LoginForm() {
   const [showPassword, setShowPassword] = useState(false)

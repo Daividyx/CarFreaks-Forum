@@ -1,7 +1,7 @@
-import CategoryGrid from '@/app/_components/categoryGrid'
-import Hero from '@/app/_components/hero'
-import LatestTreads from '@/app/_components/latestTreads'
+import CategoryGrid from '@/app/categoryGrid'
+
 import { prisma } from '@/database/prisma'
+import Hero from './hero'
 
 export default async function Home() {
   const categories = await prisma.category.findMany({

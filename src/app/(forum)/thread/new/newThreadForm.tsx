@@ -14,7 +14,7 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 
-import CreateThread from '@/app/serverActions/createThread'
+import CreateThread from '@/app/(forum)/thread/new/createThread'
 
 type category = {
   id: string

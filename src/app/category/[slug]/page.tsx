@@ -2,10 +2,11 @@
 
 import { prisma } from '@/database/prisma'
 import { notFound, redirect } from 'next/navigation'
-import ThreadCard from '../../thread/ThreadCard'
+
 import Link from 'next/link'
 import { auth } from '@/lib/auth'
 import { headers } from 'next/headers'
+import ThreadCard from '@/components/cards/ThreadCard'
 
 type Props = {
   params: {
@@ -48,7 +49,7 @@ export default async function CategoryPage({ params }: Props) {
 
       <div className="flex flex-col gap-4">
         {category.threads.map((thread) => (
-          <Link href={`/thread/${thread.id}`}>
+          <Link key={thread.id} href={`/thread/${thread.id}`}>
             <ThreadCard
               authorName={thread.author.name}
               threadTitle={thread.title}

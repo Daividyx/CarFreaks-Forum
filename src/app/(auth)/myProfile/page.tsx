@@ -1,11 +1,12 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 
 import { User, Mail, Lock, MessageSquare, FileText } from 'lucide-react'
-import UpdateProfileForm from '@/app/myProfile/updateProfileForm'
+
 import { cookies, headers } from 'next/headers'
 import { auth } from '@/lib/auth'
 import { redirect } from 'next/navigation'
 import { prisma } from '@/database/prisma'
+import UpdateProfileForm from './updateProfileForm'
 
 export default async function ProfilePage() {
   const session = await auth.api.getSession({

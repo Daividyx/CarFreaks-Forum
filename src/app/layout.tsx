@@ -1,7 +1,7 @@
-import { Navbar } from '@/components/navbar'
+import { Navbar } from '@/components/layout/navbar'
 import './globals.css'
-import Footer from '@/components/footer'
-import SessionInfo from './_components/sessionInfo'
+import Footer from '@/components/layout/footer'
+import SessionInfo from './sessionInfo'
 import { auth } from '@/lib/auth'
 
 export default async function RootLayout({

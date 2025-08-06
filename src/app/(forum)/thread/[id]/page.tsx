@@ -1,9 +1,8 @@
-import PostCard from '@/app/thread/PostCard'
-
 import { prisma } from '@/database/prisma'
 
 import { notFound } from 'next/navigation'
-import AnswerPostForm from '../answerPostForm'
+import AnswerPostForm from './answerPostForm'
+import PostCard from '../../../../components/cards/PostCard'
 
 type Props = {
   params: {

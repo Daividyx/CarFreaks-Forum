@@ -1,10 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import { Card, CardContent, CardDescription, CardTitle } from './ui/card'
-import { Label } from './ui/label'
-import { Input } from './ui/input'
-import { Button } from './ui/button'
+
 import { useActionState } from 'react'
 import { useState } from 'react'
 import CreateUser from '@/app/serverActions/createUser'
@@ -14,6 +11,10 @@ import { error } from 'console'
 import { auth } from '@/lib/auth'
 import { authClient } from '@/lib/auth-client'
 import { redirect } from 'next/navigation'
+import { Button } from '@/components/ui/button'
+import { Card, CardTitle, CardDescription, CardContent } from '@/components/ui/card'
+import { Input } from '@/components/ui/input'
+import { Label } from '@radix-ui/react-label'
 
 export default function RegisterForm() {
   //const [state, formAction, isPending] = useActionState(CreateUser, undefined)

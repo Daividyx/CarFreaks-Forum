@@ -1,6 +1,6 @@
 'use server'
 import { prisma } from '@/database/prisma'
-import { CreateThreadSchema } from '../validationShema/newThreadShema'
+import { CreateThreadSchema } from './newThreadShema'
 import z from 'zod'
 import { auth } from '@/lib/auth'
 import { headers } from 'next/headers'
