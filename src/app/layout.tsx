@@ -1,3 +1,11 @@
+/**
+ *
+ * Globales Layout der Anwendung
+ * Definiert die Struktur, die auf allen Seiten sichtbar ist
+ * Beinhaltet z. B. Navigation, Footer und globale Styles
+ *
+ */
+
 import { Navbar } from '@/components/layout/navbar'
 import './globals.css'
 import Footer from '@/components/layout/footer'

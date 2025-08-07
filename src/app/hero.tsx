@@ -1,7 +1,11 @@
 import { Button } from '@/components/ui/button'
+import { auth } from '@/lib/auth'
+import { headers } from 'next/headers'
 import Link from 'next/link'
 
-export default function Hero() {
+export default async function Hero() {
+  const session = await auth.api.getSession({ headers: await headers() })
+  const user = session?.user
   return (
     <section className="bg-gray-100 py-16">
       <div className="container mx-auto flex flex-col-reverse items-center justify-between gap-10 px-4 lg:flex-row">
@@ -14,19 +18,20 @@ export default function Hero() {
             Diskutiere mit anderen Auto-Enthusiasten über Technik, Tuning, Kaufberatung & mehr. Ganz
             egal ob Neuling oder Profi – hier bist du richtig!
           </p>
-
-          <div className="mt-6 flex flex-col justify-center gap-4 sm:flex-row lg:justify-start">
-            <Button asChild className="bg-amber-800 text-white hover:bg-amber-900">
-              <Link href="/login">Einloggen</Link>
-            </Button>
-            <Button
-              asChild
-              variant="secondary"
-              className="bg-yellow-400 text-amber-800 hover:bg-yellow-300"
-            >
-              <Link href="/register">Jetzt registrieren</Link>
-            </Button>
-          </div>
+          {!session && (
+            <div className="mt-6 flex flex-col justify-center gap-4 sm:flex-row lg:justify-start">
+              <Button asChild className="bg-amber-800 text-white hover:bg-amber-900">
+                <Link href="/login">Einloggen</Link>
+              </Button>
+              <Button
+                asChild
+                variant="secondary"
+                className="bg-yellow-400 text-amber-800 hover:bg-yellow-300"
+              >
+                <Link href="/register">Jetzt registrieren</Link>
+              </Button>
+            </div>
+          )}
         </div>
 
         {/* Bildbereich */}

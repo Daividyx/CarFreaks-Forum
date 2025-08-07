@@ -51,7 +51,7 @@ export function Navbar() {
       <div className="container mx-auto">
         <div className="flex items-center justify-between gap-4 p-4">
           <h1 className="text-2xl font-bold text-amber-800">
-            <Link href="/">Forum</Link>
+            <Link href="/">CarFreaks Forum</Link>
           </h1>
           <div className="flex gap-6">
             <Link className="hover:font-bold" href="/">
@@ -63,8 +63,8 @@ export function Navbar() {
             <Link className="hover:font-bold" href="/myProfile">
               Mein Profil
             </Link>
-            <Link className="hover:font-bold" href="/admin">
-              ADMIN
+            <Link className="hover:font-bold" href="/users">
+              Users
             </Link>
           </div>
           {session ? (

@@ -1,6 +1,6 @@
 'use server'
 import z from 'zod'
-import { createUserShema } from '../validationShema/createUserShema'
+import { createUserShema } from '../(auth)/register/createUserShema'
 import { prisma } from '@/database/prisma'
 import bcrypt from 'bcryptjs'
 import { auth } from '@/lib/auth'

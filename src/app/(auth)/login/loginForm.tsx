@@ -1,10 +1,16 @@
+/**
+ *
+ * LoginForm
+ * Stellt das Formular dar, das der Nutzer zum Login benötigt
+ * Ereldig mittels BetterAuth die Authentifizierungslogik und meldet den Nutzer an
+ *
+ */
 'use client'
 
 import Link from 'next/link'
 
-import { ReactEventHandler, useActionState } from 'react'
 import { useState } from 'react'
-import { LoginUser } from '@/app/serverActions/loginUser'
+
 import { authClient } from '@/lib/auth-client'
 import { useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/button'

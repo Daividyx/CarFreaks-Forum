@@ -7,20 +7,7 @@ import { Button } from '@/components/ui/button'
 import { useState } from 'react'
 import { User, Mail, Lock, MessageSquare, FileText } from 'lucide-react'
 
-type UserType = {
-  id: string
-  email: string
-  emailVerified: boolean
-  name: string
-  createdAt: Date
-  updatedAt: Date
-  image?: string | null | undefined | undefined
-}
-type prop = {
-  user: UserType
-}
-
-export default function ProfilePage({ user }: prop) {
+export default function ProfilePage(name: string) {
   const [showOld, setShowOld] = useState(false)
   const [showNew, setShowNew] = useState(false)
   const [showConfirm, setShowConfirm] = useState(false)

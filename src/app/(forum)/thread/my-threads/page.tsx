@@ -1,9 +1,10 @@
 import { auth } from '@/lib/auth'
 import { headers } from 'next/headers'
-import AuthRequiredPage from '../../notAuthenticated/page'
-import ThreadCard from '@/app/thread/ThreadCard'
+
 import { prisma } from '@/database/prisma'
 import Link from 'next/link'
+import AuthRequiredPage from '@/app/notAuthenticated/page'
+import ThreadCard from '@/components/cards/ThreadCard'
 
 export default async function MyThreads() {
   const session = await auth.api.getSession({

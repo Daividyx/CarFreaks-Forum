@@ -1,4 +1,5 @@
 'use client'
+import { prisma } from '@/database/prisma'
 import { auth } from '@/lib/auth'
 import { authClient } from '@/lib/auth-client'
 import { Database } from 'lucide-react'
@@ -9,9 +10,13 @@ export default function SessionInfo() {
 
   return (
     <div className="bg-gray-100 p-2 text-left text-sm">
-      {session
-        ? `Du bist eingeloggt als ${session.user.name ?? 'Unbekannt'}`
-        : 'Du bist nicht eingeloggt'}
+      {session ? (
+        <p className="flex gap-1 p-4 text-xl">
+          Du bist eingeloggt als <p className="text-destructive font-bold">{session.user.name}</p>
+        </p>
+      ) : (
+        <p className="text-xl">Du bist nicht eingeloggt</p>
+      )}
     </div>
   )
 }

@@ -1,10 +1,11 @@
 'use server'
-import { CreatePostShema } from '../validationShema/createPostShema'
+
 import z from 'zod'
 import { prisma } from '@/database/prisma'
 import { auth } from '@/lib/auth'
 import { headers } from 'next/headers'
 import { redirect } from 'next/navigation'
+import { CreatePostShema } from './createPostShema'
 
 export default async function createPost(prevState: unknown, formData: FormData) {
   // User aus der Session holen

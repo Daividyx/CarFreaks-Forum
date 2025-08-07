@@ -6,7 +6,7 @@ import { useActionState } from 'react'
 import { useState } from 'react'
 import CreateUser from '@/app/serverActions/createUser'
 import z, { ZodError } from 'zod'
-import { createUserShema } from '@/app/validationShema/createUserShema'
+import { createUserShema } from '@/app/(auth)/register/createUserShema'
 import { error } from 'console'
 import { auth } from '@/lib/auth'
 import { authClient } from '@/lib/auth-client'
@@ -15,6 +15,7 @@ import { Button } from '@/components/ui/button'
 import { Card, CardTitle, CardDescription, CardContent } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Label } from '@radix-ui/react-label'
+import { promoteToAdmin } from './promoteToAdmin'
 
 export default function RegisterForm() {
   //const [state, formAction, isPending] = useActionState(CreateUser, undefined)
@@ -64,6 +65,9 @@ export default function RegisterForm() {
       setErrors({ general: [error.message as string] })
       setIsPending(false)
     }
+
+    //User mit Admin-Mail zum Admin machen
+    await promoteToAdmin()
 
     redirect('myProfile')
   }

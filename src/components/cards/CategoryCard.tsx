@@ -22,7 +22,7 @@ export default function ForumCard({
       {/* Links */}
       <div className="flex flex-col">
         <h2 className="text-lg font-bold text-amber-800">{title}</h2>
-        <p className="text-gray-600">{description}</p>
+        <p className="w-[400px] text-gray-600">{description}</p>
       </div>
 
       {/* Mitte */}

@@ -1,10 +1,11 @@
 'use client'
-import createPost from '@/app/serverActions/createPost'
+
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { useActionState } from 'react'
 import { unknown } from 'zod'
+import createPost from './createPost'
 
 type AnswerPostFormProps = {
   threadId: string

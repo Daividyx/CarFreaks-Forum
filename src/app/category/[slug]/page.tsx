@@ -15,6 +15,7 @@ type Props = {
 }
 
 export default async function CategoryPage({ params }: Props) {
+  const slug = params.slug
   // Nur eingeloggte Nutzer haben Zugriff.
   const session = await auth.api.getSession({
     headers: await headers(),
@@ -23,7 +24,7 @@ export default async function CategoryPage({ params }: Props) {
   if (!session) {
     redirect('/notAuthenticated')
   }
-  const slug = params.slug
+
   const category = await prisma.category.findUnique({
     where: { slug },
     include: {

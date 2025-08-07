@@ -1,3 +1,11 @@
+/**
+ *
+ * Startseite der Anwendung
+ * Rendert die Komponenten Hero und CategoryGrid
+ * Übergibt die Kategorien an das CategoryGrid zur Anzeige
+ *
+ */
+
 import CategoryGrid from '@/app/categoryGrid'
 
 import { prisma } from '@/database/prisma'
