@@ -1,7 +1,7 @@
 'use client'
 
 import { useActionState, useState } from 'react'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+
 import { Label } from '@/components/ui/label'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
@@ -15,6 +15,7 @@ import {
 } from '@/components/ui/select'
 
 import CreateThread from '@/app/(forum)/thread/new/createThread'
+import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card'
 
 type category = {
   id: string

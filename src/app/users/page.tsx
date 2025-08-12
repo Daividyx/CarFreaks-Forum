@@ -9,7 +9,13 @@ export default async function Users() {
   }
 
   return (
-    <div className="container mx-auto space-y-8">
+    <div className="mx-auto max-w-4xl space-y-8">
+      <h1> Diese Übersicht dient nur dem testen</h1>
+      <h1>
+        {' '}
+        Wenn ein passwort geändert wird, dann wird es zu "Testpasswort1234." geändert. Anschließend
+        wieder zurück zu "Testpasswort123."
+      </h1>
       {users.map((user) => (
         <div key={user.id} className="space-y-4 rounded-md border p-4 shadow-sm">
           {/* Name */}
@@ -27,7 +33,7 @@ export default async function Users() {
           {/* Passwort */}
           <div className="flex flex-col gap-2">
             <Label htmlFor={`password-${user.id}`}>Passwort</Label>
-            <Input id={`password-${user.id}`} type="text" defaultValue="Testpasswort123" />
+            <Input id={`password-${user.id}`} type="text" defaultValue="Testpasswort123." />
           </div>
         </div>
       ))}

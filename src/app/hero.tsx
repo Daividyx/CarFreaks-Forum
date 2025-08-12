@@ -18,7 +18,22 @@ export default async function Hero() {
             Diskutiere mit anderen Auto-Enthusiasten über Technik, Tuning, Kaufberatung & mehr. Ganz
             egal ob Neuling oder Profi – hier bist du richtig!
           </p>
-          {!session && (
+          {/** Prüft ob eine Session vorhanden ist.
+           * Wenn Session, dann Button -> neuer Thread
+           * Wenn !Session, Dann Button -> einloggen, registrieren
+           */}
+          {session ? (
+            <div className="mt-8 flex flex-col items-center">
+              <h1 className="text-lg font-bold">
+                Beginne eine Diskussion, stelle eine Frage oder erzähl einfach einen Witz.
+              </h1>
+              <Link href={'/thread/new'}>
+                <Button className="bg-amber-800 text-white hover:bg-amber-900 hover:font-bold">
+                  Starte einen Thema
+                </Button>
+              </Link>
+            </div>
+          ) : (
             <div className="mt-6 flex flex-col justify-center gap-4 sm:flex-row lg:justify-start">
               <Button asChild className="bg-amber-800 text-white hover:bg-amber-900">
                 <Link href="/login">Einloggen</Link>

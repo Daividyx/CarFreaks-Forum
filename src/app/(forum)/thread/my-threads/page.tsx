@@ -26,21 +26,28 @@ export default async function MyThreads() {
   })
 
   return (
-    <div className="mx-auto max-w-3xl">
-      <h1>Meine Threads</h1>
-      {threads.length === 0 && <p> DU hast noch keine Themen erstellt!</p>}
+    <div className="mx-auto max-w-4xl p-6">
+      {/* Header */}
+      <div className="mb-6 space-y-2">
+        <p className="text-md font-semibold tracking-wider text-amber-800 uppercase">Übersicht</p>
+        <h1 className="text-4xl font-extrabold tracking-tight text-amber-800">Meine Themen</h1>
+        <div className="border-border/60 mt-3 border-t" />
+      </div>
 
-      {threads.map((thread) => (
-        <Link key={thread.id} href={`/thread/${thread.id}`}>
-          <ThreadCard
-            authorName={thread.author.name}
-            createdAt={thread.createdAt}
-            postCount={thread.posts.length}
-            threadTitle={thread.title}
-            key={thread.id}
-          ></ThreadCard>
-        </Link>
-      ))}
+      {/* Inhalt */}
+      {threads.length === 0 ? (
+        <div className="text-muted-foreground rounded-lg border p-6 text-center">
+          Du hast noch keine Themen erstellt!
+        </div>
+      ) : (
+        <div className="space-y-4">
+          {threads.map((thread) => (
+            <Link key={thread.id} href={`/thread/${thread.id}`} className="block">
+              <ThreadCard thread={thread} />
+            </Link>
+          ))}
+        </div>
+      )}
     </div>
   )
 }

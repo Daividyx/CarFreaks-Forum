@@ -49,5 +49,5 @@ export default async function CreateThread(prevState: unknown, formData: FormDat
     },
   })
 
-  redirect(`/threads/${newThread.id}`)
+  redirect(`/thread/${newThread.id}`)
 }

@@ -1,9 +1,9 @@
 import AuthRequiredPage from '@/app/notAuthenticated/page'
-import NewThreadForm from '@/app/thread/new/newThreadForm'
-import ThreadCard from '@/app/thread/ThreadCard'
+
 import { prisma } from '@/database/prisma'
 import { auth } from '@/lib/auth'
 import { headers } from 'next/headers'
+import NewThreadForm from './newThreadForm'
 
 export default async function NewThreadPage() {
   const categories = await prisma.category.findMany({})

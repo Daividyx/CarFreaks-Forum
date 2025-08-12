@@ -1,16 +1,11 @@
-/**
- *
- * Globales Layout der Anwendung
- * Definiert die Struktur, die auf allen Seiten sichtbar ist
- * Beinhaltet z. B. Navigation, Footer und globale Styles
- *
- */
+// Datei: RootLayout.tsx
+// Globales Layout der Anwendung: Enthält Navbar, SessionInfo, Seiteninhalt und Footer.
+// Wird von Next.js als zentrales Layout für alle Seiten verwendet.
 
 import { Navbar } from '@/components/layout/navbar'
-import './globals.css'
+import './globals.css' // Globale CSS-Styles
 import Footer from '@/components/layout/footer'
 import SessionInfo from './sessionInfo'
-import { auth } from '@/lib/auth'
 
 export default async function RootLayout({
   children,
@@ -19,16 +14,12 @@ export default async function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <>
-        <body>
-          <div className="h-full w-full bg-gray-100">
-            <Navbar />
-            <SessionInfo></SessionInfo>
-            {children}
-            <Footer />
-          </div>
-        </body>
-      </>
+      <body className="flex min-h-screen flex-col bg-gray-100">
+        <Navbar /> {/* Navigation oben */}
+        <SessionInfo /> {/* Anzeige Login-Status */}
+        <div className="max-h-screen flex-1 overflow-y-auto">{children}</div> {/* Hauptinhalt */}
+        <Footer /> {/* Footer unten */}
+      </body>
     </html>
   )
 }
