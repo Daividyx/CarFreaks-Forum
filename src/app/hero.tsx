@@ -50,7 +50,7 @@ export default async function Hero() {
         </div>
 
         {/* Bildbereich */}
-        <div className="flex-shrink-0">
+        <div className="hidden flex-shrink-0 md:block">
           <img
             src="Hero.jpg"
             alt="Sportwagen Illustration"

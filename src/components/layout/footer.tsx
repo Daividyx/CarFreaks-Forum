@@ -5,8 +5,8 @@ import Link from 'next/link'
 
 export default function Footer() {
   return (
-    <footer className="bg-yellow-400 text-gray-700 py-10 mt-12 border-t">
-      <div className="container mx-auto px-6 md:px-12 flex flex-col md:flex-row justify-between gap-12">
+    <footer className="mt-12 border-t bg-yellow-400 py-10 text-gray-700">
+      <div className="container mx-auto flex flex-col justify-between gap-12 px-6 md:ml-0 md:flex-row md:px-12">
         {/* Links */}
         <div className="flex flex-col">
           <h2 className="text-xl font-bold text-amber-800">CarFreaks Forum</h2>
@@ -44,7 +44,7 @@ export default function Footer() {
         {/* Rechts */}
         <div className="flex flex-col">
           <h2 className="text-xl font-bold text-amber-800">Folge uns</h2>
-          <div className="flex gap-4 mt-4">
+          <div className="mt-4 flex gap-4">
             <Link href="#" className="hover:text-amber-800" aria-label="Facebook">
               <FaFacebookF size={20} />
             </Link>

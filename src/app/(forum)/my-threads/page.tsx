@@ -40,7 +40,7 @@ export default async function MyThreads() {
           Du hast noch keine Themen erstellt!
         </div>
       ) : (
-        <div className="space-y-4">
+        <div className="flex-warp flex min-w-0 flex-col space-y-4">
           {threads.map((thread) => (
             <Link key={thread.id} href={`/thread/${thread.id}`} className="block">
               <ThreadCard thread={thread} />
