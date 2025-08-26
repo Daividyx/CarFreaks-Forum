@@ -19,16 +19,20 @@ export default function NewCategoryForm() {
       <form action={formAction} className="space-y-2">
         <div>
           <Label className="p-2">Name</Label>
-          <Input name="name" onChange={(e) => generateSlug(e.target.value)}></Input>
+          <Input
+            className="bg-white"
+            name="name"
+            onChange={(e) => generateSlug(e.target.value)}
+          ></Input>
           {state?.errors.name && <p className="text-destructive">{state.errors.name}</p>}
         </div>
         <div className="hidden">
           <Label className="p-2">Slug</Label>
-          <Input name="slug" value={slug} readOnly></Input>
+          <Input className="bg-white" name="slug" value={slug} readOnly></Input>
         </div>
         <div>
           <Label className="p-2">Beschreibung</Label>
-          <Input name="description"></Input>
+          <Input className="bg-white" name="description"></Input>
           {state?.errors.description && (
             <p className="text-destructive">{state.errors.description}</p>
           )}

@@ -67,10 +67,10 @@ export function Navbar() {
             <Link className="hover:font-bold" href="/">
               Startseite
             </Link>
-            <Link className="hover:font-bold" href="/thread/my-threads">
+            <Link className="hover:font-bold" href="/my-threads">
               Meine Themen
             </Link>
-            <Link className="hover:font-bold" href="/thread/savedThreads">
+            <Link className="hover:font-bold" href="/savedThreads">
               Gespeicherte Themen
             </Link>
             <Link className="hover:font-bold" href="/myProfile">

@@ -23,7 +23,6 @@ export default function LoginForm() {
   const [isPending, setIsPending] = useState(false)
   const [error, setError] = useState<string | null | undefined>(null)
   const router = useRouter()
-
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
     setIsPending(true)
