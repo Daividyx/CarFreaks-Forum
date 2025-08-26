@@ -1,14 +1,12 @@
-
 /**
  * Startseite der Anwendung
  * Rendert die Komponenten Hero und CategoryGrid
  * Übergibt die Kategorien an das CategoryGrid zur Anzeige
  */
 
-import CategoryGrid from '@/app/categoryGrid'
-
 import { prisma } from '@/database/prisma'
 import Hero from './hero'
+import CategoryGrid from './categoryGrid'
 
 export default async function Home() {
   const categories = await prisma.category.findMany({

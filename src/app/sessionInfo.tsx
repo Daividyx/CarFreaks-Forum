@@ -11,7 +11,7 @@ export default async function SessionInfo() {
   const userRole = session?.user.role
 
   return (
-    <div className="container mx-auto bg-gray-100 p-2 text-left text-sm">
+    <div className="container mx-auto p-2 text-left text-sm">
       {!session ? (
         // Nicht eingeloggt
         <p className="text-xl">Du bist nicht eingeloggt</p>
