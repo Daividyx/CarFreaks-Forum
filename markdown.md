@@ -18,14 +18,14 @@ carfreaksforum/ # Next.js + TypeScript Forumprojekt
 │ │ ├── (auth)/ # Seiten und Funktionen für Authentifizierung (Login, Regitrierung)
 │ │ ├── (forum)/ # Seiten und Funktionen für das Forum (Kategorien, Threads, SavedThreads)
 │ │ ├── admin/ # Admin Seiten und Funktionen (CRUD Funktionalitäten für Kategorien, Threads und Posts)
-│ │ │
-│ │ ├── notAuthenticated/page.tsx# Hinweisseite bei fehlender Session
-│ │ ├── notAdmin/page.tsx # Hinweisseite bei fehlenden Rechten
-│ │ ├── sessionInfo.tsx # Debug/Info zur Session
-│ │ ├── hero.tsx # Startseiten-Hero
+│ │ │── api/ # Interne Dateien für Better Auth
+│ │ ├── notAdmin/ # Fehler Seite wenn User kein Admin ist
+│ │ ├── notAuthenticated/ # Fehler Seite wenn User nicht eingeloggt ist
+│ │ ├── serverActions/ # Server Actions
+│ │ ├── users/ # Temporäre Anzeige aller User zur Entwicklung
 │ │ ├── categoryGrid.tsx # Kategorie-Übersicht (Komponentenseite)
 │ │ ├── validationShema/ # (Tippfehler im Ordnernamen—Zod-Schemas)
-│ │ │
+│ │ │──
 │ │ └── serverActions/ # Serverseitige Aktionen (Form-Submit, Mutationen)
 │ │ ├── createCategory.ts
 │ │ ├── deleteCategory.ts
