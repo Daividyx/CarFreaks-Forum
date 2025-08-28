@@ -1,69 +1,35 @@
 ```
 carfreaksforum/ # Next.js + TypeScript Forumprojekt
 │
-├── public/ # Statische Assets (Favicons, Bilder)
+├── public/ # Statische Assets (Bilder)
 │
 ├── prisma/ # Datenbank-Layer (Prisma)
 │ ├── schema.prisma # Datenbank-Modelle & Relationen
 │ ├── weitere Interne Dateien für Prisma
-│
-│
-│
 ├── src/
-│ ├── app/ # Routing, Seiten & Server Actions (Next.js App Router)
+│ ├── app/ # Hauptverzeichnis des Projekts
 │ │ ├── layout.tsx # Globales Layout der Anwendung (Navbar/Footer)
-│ │ ├── page.tsx # Startseite der Anwendung
 │ │ ├── globals.css # Globale Styles
-│ │ │
+│ │ ├── (start)/ # Startseite der Anwendung
 │ │ ├── (auth)/ # Seiten und Funktionen für Authentifizierung (Login, Regitrierung)
-│ │ ├── (forum)/ # Seiten und Funktionen für das Forum (Kategorien, Threads, SavedThreads)
+│ │ ├── (forum)/ # Seiten und Funktionen für das Forum (Kategorien, Threads, SavedThreads, MyThreads)
 │ │ ├── admin/ # Admin Seiten und Funktionen (CRUD Funktionalitäten für Kategorien, Threads und Posts)
+│ │ ├── (error)/ # Error Seiten (nicht eingeloggt, kein Admin)
 │ │ │── api/ # Interne Dateien für Better Auth
-│ │ ├── notAdmin/ # Fehler Seite wenn User kein Admin ist
-│ │ ├── notAuthenticated/ # Fehler Seite wenn User nicht eingeloggt ist
-│ │ ├── serverActions/ # Server Actions
 │ │ ├── users/ # Temporäre Anzeige aller User zur Entwicklung
-│ │ ├── categoryGrid.tsx # Kategorie-Übersicht (Komponentenseite)
-│ │ ├── validationShema/ # (Tippfehler im Ordnernamen—Zod-Schemas)
-│ │ │──
-│ │ └── serverActions/ # Serverseitige Aktionen (Form-Submit, Mutationen)
-│ │ ├── createCategory.ts
-│ │ ├── deleteCategory.ts
-│ │ ├── deletePost.ts
-│ │ ├── deleteThread.ts
-│ │ ├── deleteUser.ts
-│ │ ├── editPost.ts
-│ │ ├── promoteUser.ts
-│ │ ├── toggleBookmark.ts
-│ │ └── toggleLike.ts
 │ │
 │ ├── components/ # Wiederverwendbare UI-Komponenten
-│ │ ├── layout/ # Layout-Bausteine (Navbar, Footer, etc.)
-│ │ ├── buttons/ # Button-Varianten/Aktionen
-│ │ ├── ui/ # shadcn/ui-Exports & Wrapper
-│ │ └── cards/ # Karten für Domain-Objekte
-│ │ ├── CategoryCard.tsx
-│ │ ├── ThreadCard.tsx
-│ │ ├── PostCard.tsx
-│ │ └── UserCard.tsx
+│ │ ├── layout/ # Layout-Bausteine (Navbar, Footer)
+│ │ ├── buttons/ # Buttons
+│ │ ├── ui/ # shadCn komponenten
+│ │ └── cards/ # Karten (threadCard,PostCard)
 │ │
-│ ├── lib/ # Infrastruktur/Config/Hilfen
-│ │ ├── auth.ts # BetterAuth-Serverkonfiguration
-│ │ ├── auth-client.ts # BetterAuth-Client
+│ ├── lib/ # ServerActions, Hilfsfunktionen
+│ │ ├── serverActions/ # Server Actions (Thread erstellen/löschen ...)
+│ │ ├── validationShema/ # Benutzereingaben validieren
 │ │ └── utils.ts # Helfer (z. B. Formatierungen)
 │ │
-│ ├── database/
-│ │ └── prisma.ts # Prisma Client-Instanz
-│ │
-│ └── generated/ # Generierter Code (z. B. Prisma-Types)
-│
-├── docker-compose.yml # MySQL (Docker) & lokale Infrastruktur
-├── next.config.ts # Next.js Konfiguration
-├── postcss.config.mjs # PostCSS
-├── tailwind.config.ts # Tailwind CSS Konfiguration
-├── eslint.config.mjs # ESLint
-├── prettier.config.js # Prettier
-├── tsconfig.json # TypeScript-Konfiguration
-├── package.json # Abhängigkeiten & Scripts
-└── README.md # Projektbeschreibung
+│ ├── database/ # Prisma instanz
+├── docker-compose.yml # Docker Konfigurationsdatei
+
 ```

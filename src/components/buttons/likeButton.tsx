@@ -4,7 +4,7 @@ import { useState, useTransition } from 'react'
 import { FaHeart } from 'react-icons/fa'
 import { Button } from '../ui/button'
 import { Label } from '../ui/label'
-import { toggleLike } from '@/app/serverActions/toggleLike'
+import { toggleLike } from '@/lib/serverActions/toggleLike'
 
 type props = {
   postId: string

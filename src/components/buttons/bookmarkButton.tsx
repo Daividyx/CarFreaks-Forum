@@ -10,11 +10,11 @@ import { FaBookmark } from 'react-icons/fa'
 import { Button } from '../ui/button'
 import { Label } from '../ui/label'
 import { useState, useTransition } from 'react'
-import { toggleBookmark } from '@/app/serverActions/toggleBookmark'
+import { toggleBookmark } from '@/lib/serverActions/toggleBookmark'
 
 type Props = {
-  threadId: string              // ID des Threads
-  initialBookmarked: boolean    // Anfangszustand: ist der Thread gespeichert?
+  threadId: string // ID des Threads
+  initialBookmarked: boolean // Anfangszustand: ist der Thread gespeichert?
 }
 
 export default function BookmarkButton({ threadId, initialBookmarked }: Props) {
@@ -36,11 +36,7 @@ export default function BookmarkButton({ threadId, initialBookmarked }: Props) {
   return (
     <div className="flex flex-col items-center gap-2">
       <Label>Thema merken</Label>
-      <Button
-        onClick={handleClick}
-        disabled={isPending}
-        className="bg-gray-100 hover:bg-gray-100"
-      >
+      <Button onClick={handleClick} disabled={isPending} className="bg-gray-100 hover:bg-gray-100">
         <FaBookmark
           className={`text-xl transition-colors ${bookmarked ? 'text-amber-500' : 'text-gray-400'}`}
         />

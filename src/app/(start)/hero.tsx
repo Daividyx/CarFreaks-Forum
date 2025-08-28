@@ -7,7 +7,7 @@ export default async function Hero() {
   const session = await auth.api.getSession({ headers: await headers() })
   const user = session?.user
   return (
-    <section className="bg-gray-100 py-16">
+    <section className="py-16">
       <div className="container mx-auto flex flex-col-reverse items-center justify-between gap-10 px-4 lg:flex-row">
         {/* Textbereich */}
         <div className="max-w-xl text-center lg:text-left">

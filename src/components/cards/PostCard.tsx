@@ -3,10 +3,10 @@ import { Card, CardDescription } from '@/components/ui/card'
 
 import LikeButton from '../buttons/likeButton'
 import PostDropdownMenuButton from '../buttons/postDropdownMenuButton'
-import deletePost from '@/app/serverActions/deletePost'
+import deletePost from '@/lib/serverActions/deletePost'
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import editPost from '@/app/serverActions/editPost'
+import editPost from '@/lib/serverActions/editPost'
 import { Button } from '../ui/button'
 
 type Props = {

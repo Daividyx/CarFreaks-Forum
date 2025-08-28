@@ -20,7 +20,7 @@ import { promoteToAdmin } from './promoteToAdmin'
 export default function RegisterForm() {
   //const [state, formAction, isPending] = useActionState(CreateUser, undefined)
 
-  // Zustand für Passwort-Anzeigen
+  // States
   const [showPassword, setShowPassword] = useState(false)
   const [showConfirmPassword, setShowConfirmPassword] = useState(false)
   const [errors, setErrors] = useState<Record<string, string[]>>({})
@@ -46,15 +46,13 @@ export default function RegisterForm() {
     // Daten validieren mit zod
     //Wenn Fehler, dann Errors in den State speichern
     const parsed = createUserShema.safeParse(data)
-    console.log('parsed.success:', parsed.success)
-    console.log('parsed.error:', parsed.error)
+
     if (!parsed.success) {
       setErrors(z.flattenError(parsed.error).fieldErrors)
       setIsPending(false)
       return
     }
-    console.log('parsed.data:', parsed.data)
-    console.log('better auth aufgerufen')
+
     //User Account erstellen mit betterAuth
     const { error } = await authClient.signUp.email({
       name: parsed.data.name,
@@ -90,7 +88,7 @@ export default function RegisterForm() {
           {/* Email */}
           <div className="w-[300px] space-y-2">
             <Label className="px-2">Email Adresse</Label>
-            <Input name="email" id="email" />
+            <Input name="email" id="email" type="email" />
             {errors.email?.[0] && <p className="px-2 text-sm text-red-700">{errors.email[0]}</p>}
           </div>
 

@@ -1,4 +1,4 @@
-import AuthRequiredPage from '@/app/notAuthenticated/page'
+import AuthRequiredPage from '@/app/(error)/notAuthenticated/page'
 
 import { prisma } from '@/database/prisma'
 import { auth } from '@/lib/auth'

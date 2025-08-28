@@ -9,12 +9,12 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { FaEllipsisV } from 'react-icons/fa'
-import deleteThread from '@/app/serverActions/deleteThread'
+import deleteThread from '@/lib/serverActions/deleteThread'
 import Link from 'next/link'
-import deletePost from '@/app/serverActions/deletePost'
-import deleteUser from '@/app/serverActions/deleteUser'
-import promoteUser from '@/app/serverActions/promoteUser'
-import DeleteCategory from '@/app/serverActions/deleteCategory'
+import deletePost from '@/lib/serverActions/deletePost'
+import deleteUser from '@/lib/serverActions/deleteUser'
+import promoteUser from '@/lib/serverActions/promoteUser'
+import DeleteCategory from '@/lib/serverActions/deleteCategory'
 
 export function PostDropdownMenuButton({ postId }: { postId: string }) {
   const router = useRouter()

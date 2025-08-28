@@ -1,6 +1,6 @@
 'use client'
 
-import createCategory from '@/app/serverActions/createCategory'
+import createCategory from '@/lib/serverActions/createCategory'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'

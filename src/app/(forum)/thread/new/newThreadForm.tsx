@@ -28,6 +28,7 @@ type NewThreadProp = {
 }
 
 export default function NewThreadForm({ categories }: NewThreadProp) {
+  //State
   const [state, formAction, isPending] = useActionState(CreateThread, undefined)
   const [selected, setSelected] = useState('')
 

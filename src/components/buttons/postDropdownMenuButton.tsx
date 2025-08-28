@@ -8,9 +8,9 @@ import {
 } from '@/components/ui/dropdown-menu'
 import { Button } from '@/components/ui/button'
 import { FaEllipsisV } from 'react-icons/fa'
-import deletePost from '@/app/serverActions/deletePost'
+import deletePost from '@/lib/serverActions/deletePost'
 import { useRouter } from 'next/navigation'
-import editPost from '@/app/serverActions/editPost'
+import editPost from '@/lib/serverActions/editPost'
 
 type Props = {
   postId: string

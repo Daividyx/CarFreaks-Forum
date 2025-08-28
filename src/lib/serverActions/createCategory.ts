@@ -1,9 +1,8 @@
 'use server'
 import z from 'zod'
-import { NewCategoryShema } from '../../lib/validationShema/newCategoryShema'
-
-import { redirect } from 'next/navigation'
+import { NewCategoryShema } from '../validationShema/newCategoryShema'
 import { prisma } from '@/database/prisma'
+import { redirect } from 'next/navigation'
 
 export default async function createCategory(prevState: unknown, formData: FormData) {
   const data = {

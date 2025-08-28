@@ -1,6 +1,6 @@
 'use client'
-import deleteUser from '@/app/serverActions/deleteUser'
-import promoteUser from '@/app/serverActions/promoteUser'
+import deleteUser from '@/lib/serverActions/deleteUser'
+import promoteUser from '@/lib/serverActions/promoteUser'
 import { UserDropdownMenuButton } from '@/components/buttons/adminDropdownMenuButon'
 
 import { Button } from '@/components/ui/button'

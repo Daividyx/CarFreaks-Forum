@@ -3,7 +3,7 @@ import { headers } from 'next/headers'
 
 import { prisma } from '@/database/prisma'
 import Link from 'next/link'
-import AuthRequiredPage from '@/app/notAuthenticated/page'
+import AuthRequiredPage from '@/app/(error)/notAuthenticated/page'
 import ThreadCard from '@/components/cards/ThreadCard'
 
 export default async function MyThreads() {
