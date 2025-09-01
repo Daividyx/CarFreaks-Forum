@@ -9,6 +9,11 @@ export const auth = betterAuth({
   database: prismaAdapter(prisma, {
     provider: 'mysql',
   }),
+  advanced: {
+    ipAddress: {
+      disableIpTracking: true,
+    },
+  },
   emailAndPassword: {
     //Registrierung mit Email und Passwort
     enabled: true,

@@ -1,0 +1,42 @@
+sequenceDiagram
+    participant U as Nutzer
+    participant C as RegisterForm (Client)
+    participant BAC as BetterAuth Client
+    participant BAS as Better Auth (Server)
+    participant DB as Prisma/MySQL
+
+    U->>C: Formular ausfüllen & absenden
+    C->>BAC: signUp.email(name, email, password)
+    BAC->>BAS: POST /sign-up
+    BAS->>BAS: Validierung<br/>(Schema/Zod, Eindeutigkeit)
+    BAS->>DB: TX: User anlegen + Account (Passwort-Hash)
+    BAS-->>BAC: 201 + Set-Cookie(Session-Token)
+    BAC-->>C: Erfolg
+    C-->>U: Redirect auf /myProfile
+
+    alt Fehlerfall
+      BAS-->>BAC: 400 (generische Fehlermeldung)
+      BAC-->>C: Fehler weiterreichen
+      C-->>U: Validierungs-/Fehlerhinweis anzeigen
+    end
+
+sequenceDiagram
+    participant C as Client
+    participant SA as Server Action (promoteToAdmin)
+    C->>SA: promoteToAdmin()
+    SA->>DB: User.role = ADMIN
+    SA-->>C: OK
+
+    flowchart TD
+  A[Submit-Event] --> B{isPending?}
+  B -->|ja| A1[Ignorieren (Doppelklick/Spam)]
+  B -->|nein| C[Setze isPending = true\nLeere errors]
+  C --> D[FormData lesen\n(name, email, password, confirmPassword)]
+  D --> E{Zod-Validierung ok?}
+  E -->|nein| E1[errors = fieldErrors\nisPending = false\nFehler anzeigen]
+  E -->|ja| F[authClient.signUp.email(...)]
+  F --> G{error?}
+  G -->|ja| G1[errors.general = message\nisPending = false\nFehler anzeigen]
+  G -->|nein| H[promoteToAdmin()]
+  H --> I[Weiterleitung auf /myProfile]
+  I --> Z[Ende]

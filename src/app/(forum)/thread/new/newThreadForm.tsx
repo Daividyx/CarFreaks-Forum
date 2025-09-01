@@ -61,12 +61,10 @@ export default function NewThreadForm({ categories }: NewThreadProp) {
                 <p className="text-destructive">{state?.fieldErrors?.categoryId}</p>
               )}
             </div>
-
             {/* HiddenInput für selected Category */}
             <div className="space-y-2">
               <Input name="categoryId" value={selected} hidden />
             </div>
-
             {/* Titel */}
             <div className="space-y-2">
               <Label>Titel</Label>
@@ -75,7 +73,6 @@ export default function NewThreadForm({ categories }: NewThreadProp) {
                 <p className="text-destructive">{state?.fieldErrors?.title}</p>
               )}
             </div>
-
             {/* Text */}
             <div className="space-y-2">
               <Label>Beitrag</Label>
@@ -84,7 +81,6 @@ export default function NewThreadForm({ categories }: NewThreadProp) {
                 <p className="text-destructive">{state?.fieldErrors?.text}</p>
               )}
             </div>
-
             {/* Button */}
             <div className="pt-4">
               <Button

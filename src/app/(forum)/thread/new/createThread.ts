@@ -5,7 +5,6 @@ import z from 'zod'
 import { auth } from '@/lib/auth'
 import { headers } from 'next/headers'
 import { redirect } from 'next/navigation'
-
 export default async function CreateThread(prevState: unknown, formData: FormData) {
   const data = {
     categoryId: formData.get('categoryId')?.toString(),
@@ -20,7 +19,6 @@ export default async function CreateThread(prevState: unknown, formData: FormDat
       sessionError: 'Es wurde keine Session gefunden',
     }
   }
-
   const parsed = CreateThreadSchema.safeParse(data)
   if (!parsed.success) {
     return {
@@ -28,7 +26,6 @@ export default async function CreateThread(prevState: unknown, formData: FormDat
       fieldErrors: z.flattenError(parsed.error).fieldErrors,
     }
   }
-
   const newThread = await prisma.thread.create({
     data: {
       title: parsed.data.title,
@@ -38,7 +35,6 @@ export default async function CreateThread(prevState: unknown, formData: FormDat
       categoryId: parsed.data.categoryId,
     },
   })
-
   await prisma.post.create({
     data: {
       content: parsed.data.text,
@@ -48,6 +44,5 @@ export default async function CreateThread(prevState: unknown, formData: FormDat
       threadId: newThread.id,
     },
   })
-
   redirect(`/thread/${newThread.id}`)
 }

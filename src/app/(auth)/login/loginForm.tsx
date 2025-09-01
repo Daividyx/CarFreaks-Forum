@@ -38,6 +38,7 @@ export default function LoginForm() {
       setIsPending(false)
       return
     }
+    // User einloggen mit Better Auth
     const { error } = await authClient.signIn.email({
       email: data.email,
       password: data.password,

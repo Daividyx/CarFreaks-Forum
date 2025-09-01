@@ -1,7 +1,5 @@
 import * as z from 'zod'
 
-// Zod Schema, dass die Benutzeraingaben Validiert. Gibt entsprechende fehlermeldungen zurück wenn etwas nicht stimmt
-//Vergleicht auch ob beide Passwörter gleich sind
 export const createUserShema = z
   .object({
     name: z.string().trim().min(4, ' Der benutzername muss mindestens 4 Zeichen lang sein'),

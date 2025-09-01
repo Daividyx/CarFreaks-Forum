@@ -2,22 +2,21 @@
 
 import Link from 'next/link'
 
-import { useActionState } from 'react'
 import { useState } from 'react'
 
 import z, { ZodError } from 'zod'
 import { createUserShema } from '@/app/(auth)/register/createUserShema'
-import { error } from 'console'
-import { auth } from '@/lib/auth'
 import { authClient } from '@/lib/auth-client'
-import { redirect } from 'next/navigation'
+
 import { Button } from '@/components/ui/button'
 import { Card, CardTitle, CardDescription, CardContent } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Label } from '@radix-ui/react-label'
 import { promoteToAdmin } from './promoteToAdmin'
+import { useRouter } from 'next/navigation'
 
 export default function RegisterForm() {
+  const router = useRouter()
   //const [state, formAction, isPending] = useActionState(CreateUser, undefined)
 
   // States
@@ -28,13 +27,13 @@ export default function RegisterForm() {
 
   //eigene Handle Submit funktion wird vom Formular aufgerufen
   async function handleSubmit(e: React.FormEvent) {
+    if (isPending) {
+      return
+    }
     e.preventDefault() //neuladen verhindern
     setErrors({}) // Error State clearen
     setIsPending(true) // isPending auf true setzen
-    console.log('Submit wurde ausgelöst')
-
-    //Neues FormData Objekt erzeugen aus dem event von react
-    //Daten aus formData auslesen und speichern
+    //Neues FormData Objekt erzeugen aus dem Event
     const formData = new FormData(e.currentTarget as HTMLFormElement)
     const data = {
       name: formData.get('name')?.toString(),
@@ -42,7 +41,6 @@ export default function RegisterForm() {
       password: formData.get('password')?.toString(),
       confirmPassword: formData.get('confirmPassword')?.toString(),
     }
-    console.log('Daten aus dem Formular gezogen:', data)
     // Daten validieren mit zod
     //Wenn Fehler, dann Errors in den State speichern
     const parsed = createUserShema.safeParse(data)
@@ -62,12 +60,13 @@ export default function RegisterForm() {
     if (error) {
       setErrors({ general: [error.message as string] })
       setIsPending(false)
+      return
     }
 
     //User mit Admin-Mail zum Admin machen
     await promoteToAdmin()
 
-    redirect('myProfile')
+    router.push('/myProfile')
   }
 
   return (

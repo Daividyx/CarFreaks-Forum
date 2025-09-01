@@ -19,26 +19,24 @@ import {
 import Link from 'next/link'
 
 export default async function ProfilePage() {
+  // Session abrufen
   const session = await auth.api.getSession({
     headers: await headers(),
   })
-
   if (!session) {
     redirect('/login')
   }
-  // User aus der Session speichern
+  // User Daten aus der Session speichern
   const user = session.user
   const userName = user.name
   const userEmail = user.email
-
-  // Anzahl der Posts und Threads zählen
+  // Datenbankabfrage mit gespeicherten UserDaten
   const threadCount = await prisma.thread.count({
     where: { authorId: user.id },
   })
   const postCount = await prisma.post.count({
     where: { authorId: user.id },
   })
-
   const likeCount = await prisma.like.count({
     where: { userId: user.id },
   })

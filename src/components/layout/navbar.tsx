@@ -120,7 +120,6 @@ export function MobileNavbar() {
                   </Link>
                 )}
               </nav>
-
               {session ? (
                 <Button className="ml-20 w-20" onClick={handleLogout}>
                   Logout
