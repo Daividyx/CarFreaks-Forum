@@ -83,19 +83,23 @@ Start MySQL with Docker:
 
     docker compose up -d
 
+Generate Prisma Client:
+
+    npx prisma generate
+
 Run migrations:
 
     npx prisma migrate dev
+
+Seed the database manually:
+
+    npm run prisma-seed
 
 ## Usage
 
 Start the development server:
 
     npm run dev
-
-Seed the database manually:
-
-    npm run prisma-seed
 
 ### Seeder actions
 
