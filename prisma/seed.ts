@@ -1,11 +1,10 @@
 import { PrismaClient } from '@/generated/prisma'
 import { categories } from './categories'
-
 import { auth } from '@/lib/auth'
 
 const prisma = new PrismaClient()
 
-// Users
+// User Data
 const users = [
   { name: 'admin', email: 'admin@mail.com', password: 'Testpasswort123.' },
   { name: 'David', email: 'david@mail.com', password: 'Testpasswort123.' },
@@ -18,18 +17,28 @@ const users = [
   { name: 'Sophie', email: 'sophie@mail.com', password: 'Testpasswort123.' },
   { name: 'Paul', email: 'paul@mail.com', password: 'Testpasswort123.' },
 ]
+const adminEmail = 'admin@mail.com'
 
 // Main
 async function main() {
+  console.log('\n==============================')
+  console.log('🚀 Seed-Prozess wird gestartet')
+  console.log('==============================\n')
+
   await clearTables()
   await seedCategory()
   await seedUser()
+  await promoteAdmin(adminEmail)
   await seedThreads()
   await seedPosts()
+
+  console.log('\n==============================')
+  console.log('🏁 Seed-Prozess abgeschlossen!')
+  console.log('==============================\n')
 }
 main()
   .catch((e) => {
-    console.error(e)
+    console.error('❌ Fehler im Seed-Prozess:', e)
     process.exit(1)
   })
   .finally(async () => {
@@ -38,7 +47,8 @@ main()
 
 // Alle Tabellen leeren vor dem Seeden
 async function clearTables() {
-  console.log('Tabellen werden geleert')
+  console.log('🧹 Schritt 1: Tabellen werden geleert...\n')
+
   await prisma.like.deleteMany()
   await prisma.bookmark.deleteMany()
   await prisma.post.deleteMany()
@@ -48,8 +58,8 @@ async function clearTables() {
   await prisma.session.deleteMany()
   await prisma.user.deleteMany()
 
-  // Tabellen Prüfen
-  console.log('Tabellen werden überprüft')
+  console.log('🔎 Überprüfung nach dem Löschen:')
+
   const users = await prisma.user.count()
   const sessions = await prisma.session.count()
   const accounts = await prisma.account.count()
@@ -59,70 +69,57 @@ async function clearTables() {
   const bookmarks = await prisma.bookmark.count()
   const likes = await prisma.like.count()
 
-  if (users === 0) console.log('User ✅ leer')
-  else console.log('User ❌ noch Daten vorhanden')
+  if (users === 0) console.log('   User       ✅ leer')
+  else console.log('   User       ❌ noch Daten vorhanden')
 
-  if (sessions === 0) console.log('Sessions ✅ leer')
-  else console.log('Sessions ❌ noch Daten vorhanden')
+  if (sessions === 0) console.log('   Sessions   ✅ leer')
+  else console.log('   Sessions   ❌ noch Daten vorhanden')
 
-  if (accounts === 0) console.log('Accounts ✅ leer')
-  else console.log('Accounts ❌ noch Daten vorhanden')
+  if (accounts === 0) console.log('   Accounts   ✅ leer')
+  else console.log('   Accounts   ❌ noch Daten vorhanden')
 
-  if (categories === 0) console.log('Categories ✅ leer')
-  else console.log('Categories ❌ noch Daten vorhanden')
+  if (categories === 0) console.log('   Categories ✅ leer')
+  else console.log('   Categories ❌ noch Daten vorhanden')
 
-  if (threads === 0) console.log('Threads ✅ leer')
-  else console.log('Threads ❌ noch Daten vorhanden')
+  if (threads === 0) console.log('   Threads    ✅ leer')
+  else console.log('   Threads    ❌ noch Daten vorhanden')
 
-  if (posts === 0) console.log('Posts ✅ leer')
-  else console.log('Posts ❌ noch Daten vorhanden')
+  if (posts === 0) console.log('   Posts      ✅ leer')
+  else console.log('   Posts      ❌ noch Daten vorhanden')
 
-  if (bookmarks === 0) console.log('Bookmarks ✅ leer')
-  else console.log('Bookmarks ❌ noch Daten vorhanden')
+  if (bookmarks === 0) console.log('   Bookmarks  ✅ leer')
+  else console.log('   Bookmarks  ❌ noch Daten vorhanden')
 
-  if (likes === 0) console.log('Likes ✅ leer')
-  else console.log('Likes ❌ noch Daten vorhanden')
+  if (likes === 0) console.log('   Likes      ✅ leer')
+  else console.log('   Likes      ❌ noch Daten vorhanden')
 
-  // Wenn alles leer ist -> seeden
-  if (
-    users === 0 &&
-    sessions === 0 &&
-    accounts === 0 &&
-    categories === 0 &&
-    threads === 0 &&
-    posts === 0 &&
-    bookmarks === 0 &&
-    likes === 0
-  ) {
-    console.log('Alles leer ✅ -> Starte Seeding...')
-  }
+  console.log('\n✅ Tabellen erfolgreich geleert!\n')
 }
-//Kategorien Seeden
+
+// Kategorien seeden
 async function seedCategory() {
-  //Prüfen ob bereits Kategorien existieren
+  console.log('📂 Schritt 2: Kategorien werden geseedet...\n')
+
   const existing = await prisma.category.findMany()
-  if (existing.length != 0) {
-    console.log(
-      'Datenbank enthält schon Kategorien Zum Seeden muss sie aber leer sein!. Vorgang Abgebrochen'
-    )
+  if (existing.length !== 0) {
+    console.log('❌ Kategorien existieren bereits – Vorgang abgebrochen.\n')
     return
   }
 
   for (let c of categories) {
-    await prisma.category.create({
-      data: c,
-    })
+    await prisma.category.create({ data: c })
   }
-  console.log('Kategorien wurden erfolgreich geseedet ✅ ')
+
+  console.log('✅ Kategorien erfolgreich geseedet!\n')
 }
 
-// User Seeden
+// User seeden
 async function seedUser() {
+  console.log('👤 Schritt 3: User werden geseedet...\n')
+
   const existing = await prisma.user.findMany()
-  if (existing.length != 0) {
-    console.log(
-      'Datenbank enthält schon Users Zum Seeden muss sie aber leer sein!. Vorgang Abgebrochen'
-    )
+  if (existing.length !== 0) {
+    console.log('❌ User existieren bereits – Vorgang abgebrochen.\n')
     return
   }
 
@@ -135,16 +132,32 @@ async function seedUser() {
       },
     })
   }
-  console.log('user wurden erfolgreich geseedet! ✅ ')
+
+  console.log('✅ User erfolgreich geseedet!\n')
+}
+
+// Admin befördern
+async function promoteAdmin(adminEmail: string) {
+  console.log(`⭐ Schritt 4: User "${adminEmail}" wird zum Admin befördert...\n`)
+
+  try {
+    await prisma.user.update({
+      where: { email: adminEmail },
+      data: { role: 'ADMIN' },
+    })
+    console.log(`✅ "${adminEmail}" ist jetzt Admin!\n`)
+  } catch (e) {
+    console.error(`❌ Fehler: User "${adminEmail}" konnte nicht zum Admin gemacht werden.\n`, e)
+  }
 }
 
 // Threads + erster Post seeden
 async function seedThreads() {
+  console.log('📝 Schritt 5: Threads + erste Posts werden geseedet...\n')
+
   const existing = await prisma.thread.findMany()
   if (existing.length !== 0) {
-    console.log(
-      'Datenbank enthält schon Threads. Zum Seeden muss sie leer sein! Vorgang abgebrochen.'
-    )
+    console.log('❌ Threads existieren bereits – Vorgang abgebrochen.\n')
     return
   }
 
@@ -152,16 +165,14 @@ async function seedThreads() {
   const categories = await prisma.category.findMany()
 
   if (users.length === 0 || categories.length === 0) {
-    console.log('Keine User oder Kategorien gefunden. Threads können nicht geseedet werden.')
+    console.log('❌ Keine User oder Kategorien gefunden. Threads können nicht erstellt werden.\n')
     return
   }
 
   for (let u of users) {
-    // jeder User bekommt 2 Threads
     for (let i = 0; i < 2; i++) {
       const category = categories[Math.floor(Math.random() * categories.length)]
 
-      // Thread erstellen
       const thread = await prisma.thread.create({
         data: {
           title: `Thread ${i + 1} von ${u.name}`,
@@ -170,7 +181,6 @@ async function seedThreads() {
         },
       })
 
-      // Erster Post im Thread
       await prisma.post.create({
         data: {
           content: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
@@ -182,22 +192,23 @@ async function seedThreads() {
     }
   }
 
-  console.log('Threads + erste Posts wurden erfolgreich geseedet (2 pro User)! ✅ ')
+  console.log('✅ Threads + erste Posts erfolgreich geseedet!\n')
 }
 
-// Zu jedem Thread 4 Posts seeden
+// Posts seeden
 async function seedPosts() {
+  console.log('💬 Schritt 6: Zusätzliche Posts werden geseedet...\n')
+
   const threads = await prisma.thread.findMany()
   const users = await prisma.user.findMany()
 
   if (threads.length === 0 || users.length === 0) {
-    console.log('Keine Threads oder User gefunden. Posts können nicht geseedet werden.')
+    console.log('❌ Keine Threads oder User gefunden. Posts können nicht erstellt werden.\n')
     return
   }
 
   for (let t of threads) {
     for (let i = 0; i < 4; i++) {
-      // Zufälligen User auswählen
       const randomUser = users[Math.floor(Math.random() * users.length)]
 
       await prisma.post.create({
@@ -211,5 +222,5 @@ async function seedPosts() {
     }
   }
 
-  console.log('Zu jedem Thread wurden 4 Posts erstellt! ✅ ')
+  console.log('✅ 4 Posts pro Thread erfolgreich erstellt!\n')
 }

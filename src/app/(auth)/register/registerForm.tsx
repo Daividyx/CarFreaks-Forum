@@ -11,7 +11,7 @@ import { Button } from '@/components/ui/button'
 import { Card, CardTitle, CardDescription, CardContent } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Label } from '@radix-ui/react-label'
-import { promoteToAdmin } from './promoteToAdmin'
+
 import { useRouter } from 'next/navigation'
 
 export default function RegisterForm() {
@@ -69,9 +69,6 @@ export default function RegisterForm() {
       setIsPending(false)
       return
     }
-
-    // Admin-Check ausführen (User mit admin@mail.com wird Admin, falls noch kein Admin existiert)
-    await promoteToAdmin()
 
     // Weiterleitung auf Profilseite
     router.push('/myProfile')
