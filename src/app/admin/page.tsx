@@ -81,13 +81,11 @@ export default async function AdminPage() {
 
       {/* Stats */}
       <div className="grid grid-cols-2 gap-6">
-        <Link href="/thread/my-threads">
-          <Card className="flex flex-col items-center justify-center p-6 shadow-sm transition hover:border-amber-200 hover:shadow-lg">
-            <MessageSquare className="mb-2 h-10 w-10 text-amber-700" />
-            <p className="text-2xl font-bold">{threadCount}</p>
-            <p className="text-muted-foreground text-sm">Threads in diesem Monat</p>
-          </Card>
-        </Link>
+        <Card className="flex flex-col items-center justify-center p-6 shadow-sm transition hover:border-amber-200 hover:shadow-lg">
+          <MessageSquare className="mb-2 h-10 w-10 text-amber-700" />
+          <p className="text-2xl font-bold">{threadCount}</p>
+          <p className="text-muted-foreground text-sm">Threads in diesem Monat</p>
+        </Card>
 
         <Card className="flex flex-col items-center justify-center p-6 shadow-sm transition hover:border-amber-200 hover:shadow-lg">
           <FileText className="mb-2 h-10 w-10 text-amber-700" />
@@ -119,10 +117,6 @@ export default async function AdminPage() {
           </Link>
           <Link className="underline hover:font-bold" href="/admin/category">
             Kategorieverwaltung
-          </Link>
-
-          <Link className="underline hover:font-bold" href="/">
-            Thread und Post Verwaltung
           </Link>
         </div>
       </Card>

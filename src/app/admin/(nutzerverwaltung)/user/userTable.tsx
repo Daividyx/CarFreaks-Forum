@@ -1,20 +1,17 @@
 'use client'
-import deleteUser from '@/lib/serverActions/deleteUser'
-import promoteUser from '@/lib/serverActions/promoteUser'
 import { UserDropdownMenuButton } from '@/components/buttons/adminDropdownMenuButon'
 
 import { Button } from '@/components/ui/button'
 import {
   Table,
   TableBody,
-  TableCaption,
   TableCell,
   TableHead,
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
 import { useMemo, useState } from 'react'
-import { FaArrowDown, FaArrowUp } from 'react-icons/fa6'
+import { FaArrowUp } from 'react-icons/fa6'
 
 type User = {
   id: string
@@ -22,25 +19,24 @@ type User = {
   email: string
   role: 'ADMIN' | 'USER'
   createdAt: Date
-
   threadCount: number
   postCount: number
 }
+
 type Props = {
   users: User[]
 }
-// Tippfehler vermeiden
+
+// Mögliche Sortierschlüssel
 type SortKey = 'name' | 'email' | 'role' | 'createdAt' | 'threadCount' | 'postCount'
 type Direction = 'asc' | 'desc'
 
 export default function UserTable({ users }: Props) {
-  // State für Sortierkriterium und Richtung
+  // State für Sortierspalte und Richtung
   const [sortBy, setSortBy] = useState<SortKey>('name')
   const [direction, setDirection] = useState<Direction>('desc')
 
-  // Wird über einen Button in der Tabelle aufgerufen
-  // column == Spaltenname
-  // Setzt die Sortiervariable für die Sortierung auf den mitgegebenen Spaltennamen oder ändert die Richtung
+  // Umschalten der Sortierung
   function toggleSort(column: SortKey) {
     if (sortBy !== column) {
       setSortBy(column)
@@ -50,57 +46,43 @@ export default function UserTable({ users }: Props) {
     }
   }
 
-  // Liefert je nach Sortierkriterium einen vergleichbaren Key
+  // Liefert einen vergleichbaren Wert je nach Spalte
   function getComparableKey(u: User, col: SortKey): number | string {
     switch (col) {
-      // Liefert Zeit in ms seiz 1970
       case 'createdAt':
-        return Number(u.createdAt.getTime)
-      // Liefert Wert oder 0
+        // Korrektur: getTime() aufrufen, nicht die Funktion selbst zurückgeben
+        return u.createdAt.getTime()
       case 'threadCount':
         return u[col] ?? 0
       case 'postCount':
         return u[col] ?? 0
-      // Liefert Wert oder "" to LowerCase als String
       default:
         return (u[col] ?? '').toLowerCase()
     }
   }
 
-  // Sortierung soll nur erneut berechnet werden, wenn sich einer von <<[users, sortBy,direction]>> ändert
+  // Sortierung nur neu berechnen, wenn Abhängigkeiten sich ändern
   const sorted = useMemo(() => {
-    // Array kopieren, damit das originale unverändert bleibt
     const copy = [...users]
-    // Vergleicht 2 Paare a,b
-    // Wenn negativ => a vor b
-    // Wenn null => bleibt
-    // wenn positiv => a nach b
 
     copy.sort((a, b) => {
-      // vergleichbare Keys erhalten
       const aKey = getComparableKey(a, sortBy)
       const bKey = getComparableKey(b, sortBy)
+
       let result
-      // Wenn String => Vergleichen mit Methode localCompare()
       if (typeof aKey === 'string' && typeof bKey === 'string') {
         result = aKey.localeCompare(bKey, 'de')
-      }
-      // Wenn Zahl => a-b
-      else {
+      } else {
         result = Number(aKey) - Number(bKey)
       }
-      // Je nach eingestellter Richtung Rückgabe negieren oder nicht
-      if (direction === 'asc') {
-        return result
-      } else {
-        return -result
-      }
+
+      return direction === 'asc' ? result : -result
     })
 
-    // Sortierte Kopie des Arrays zurückgeben. Wird in sortet gespeichert.
     return copy
   }, [users, sortBy, direction])
 
+  // Button für sortierbare Spalten
   function SortButton(column: SortKey, label?: string) {
     const active = sortBy === column
     const rotation = active && direction === 'desc' ? 'rotate-180' : 'rotate-0'
@@ -145,11 +127,10 @@ export default function UserTable({ users }: Props) {
             <TableCell className="text-center">
               {user.createdAt.toLocaleDateString('de-DE')}
             </TableCell>
-
             <TableCell className="text-center">{user.threadCount}</TableCell>
             <TableCell className="text-center">{user.postCount}</TableCell>
             <TableCell>
-              <UserDropdownMenuButton userId={user.id}></UserDropdownMenuButton>
+              <UserDropdownMenuButton userId={user.id} />
             </TableCell>
           </TableRow>
         ))}

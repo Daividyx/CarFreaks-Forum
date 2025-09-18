@@ -1,4 +1,5 @@
 'use client'
+
 import { Button } from '@/components/ui/button'
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
@@ -9,19 +10,24 @@ import { authClient } from '@/lib/auth-client'
 import { updatePasswordShema } from '../(validation)/updatePasswordShema'
 
 export default function UpdatePasswordForm() {
+  // State für Ladezustand beim Absenden
   const [isPending, setIsPending] = useState(false)
+
+  // State für Validierungs- oder Serverfehler
   const [error, setError] = useState<Record<string, string[] | undefined> | null>(null)
 
-  // Sichtbarkeit für jedes Feld steuern
+  // Sichtbarkeit der Passwortfelder steuern
   const [showOld, setShowOld] = useState(false)
   const [showNew, setShowNew] = useState(false)
   const [showNewConfirm, setShowNewConfirm] = useState(false)
 
+  // Wird beim Absenden des Formulars ausgeführt
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
     setIsPending(true)
     setError(null)
 
+    // Eingaben auslesen
     const formData = new FormData(e.currentTarget as HTMLFormElement)
     const inputData = {
       oldPassword: formData.get('oldPassword')?.toString(),
@@ -29,6 +35,7 @@ export default function UpdatePasswordForm() {
       confirmPassword: formData.get('confirmPassword')?.toString(),
     }
 
+    // Validierung mit Zod
     const parsed = updatePasswordShema.safeParse(inputData)
     if (!parsed.success) {
       setError(z.flattenError(parsed.error).fieldErrors)
@@ -36,11 +43,14 @@ export default function UpdatePasswordForm() {
       return
     }
 
+    // Anfrage an BetterAuth: Passwort ändern
     const { data, error } = await authClient.changePassword({
       currentPassword: parsed.data.oldPassword,
-      newPassword: parsed.data.confirmPassword,
-      revokeOtherSessions: true,
+      newPassword: parsed.data.confirmPassword, // hier wird das wiederholte PW übergeben
+      revokeOtherSessions: true, // andere Sessions abmelden
     })
+
+    // Falls Fehler vom Server zurückkommt
     if (error) {
       console.error('Passwort ändern fehlgeschlagen:', error)
       setError({
@@ -50,7 +60,7 @@ export default function UpdatePasswordForm() {
       return
     }
 
-    // Erfolg
+    // Erfolgsmeldung (derzeit nur in der Konsole)
     console.log('Passwort erfolgreich geändert', data)
     setIsPending(false)
     setError(null)
@@ -64,7 +74,7 @@ export default function UpdatePasswordForm() {
             <CardTitle>Passwort ändern</CardTitle>
           </CardHeader>
           <CardContent className="space-y-6">
-            {/* Altes Passwort */}
+            {/* Feld: altes Passwort */}
             <div className="flex flex-col gap-2">
               <Label htmlFor="oldPassword">Altes Passwort</Label>
               <div className="flex gap-2">
@@ -76,7 +86,7 @@ export default function UpdatePasswordForm() {
               {error?.oldPassword && <p className="text-destructive">{error.oldPassword}</p>}
             </div>
 
-            {/* Neues Passwort */}
+            {/* Feld: neues Passwort */}
             <div className="flex flex-col gap-2">
               <Label htmlFor="newPassword">Neues Passwort</Label>
               <div className="flex gap-2">
@@ -88,7 +98,7 @@ export default function UpdatePasswordForm() {
               {error?.newPassword && <p className="text-destructive">{error.newPassword}</p>}
             </div>
 
-            {/* Neues Passwort bestätigen */}
+            {/* Feld: neues Passwort bestätigen */}
             <div className="flex flex-col gap-2">
               <Label htmlFor="confirmPassword">Neues Passwort wiederholen</Label>
               <div className="flex gap-2">
@@ -110,7 +120,7 @@ export default function UpdatePasswordForm() {
               )}
             </div>
 
-            {/* Speichern */}
+            {/* Button zum Speichern */}
             <div className="pt-4">
               <Button
                 type="submit"

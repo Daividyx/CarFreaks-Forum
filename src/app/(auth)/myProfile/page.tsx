@@ -24,22 +24,30 @@ export default async function ProfilePage() {
     headers: await headers(),
   })
   if (!session) {
-    redirect('/login')
+    redirect('/notAuthenticated')
   }
   // User Daten aus der Session speichern
   const user = session.user
-  const userName = user.name
-  const userEmail = user.email
+
   // Datenbankabfrage mit gespeicherten UserDaten
-  const threadCount = await prisma.thread.count({
-    where: { authorId: user.id },
-  })
-  const postCount = await prisma.post.count({
-    where: { authorId: user.id },
-  })
-  const likeCount = await prisma.like.count({
-    where: { userId: user.id },
-  })
+  // Variablen vorab definieren mit Fallback-Werten
+  let threadCount = 0
+  let postCount = 0
+  let likeCount = 0
+
+  try {
+    threadCount = await prisma.thread.count({
+      where: { authorId: user.id },
+    })
+    postCount = await prisma.post.count({
+      where: { authorId: user.id },
+    })
+    likeCount = await prisma.like.count({
+      where: { userId: user.id },
+    })
+  } catch (err) {
+    console.error('Die Datenbank ist nicht erreichbar.', err)
+  }
 
   return (
     <div className="mx-auto max-w-4xl space-y-10 p-6">
@@ -54,13 +62,11 @@ export default async function ProfilePage() {
 
       {/* Stats */}
       <div className="grid grid-cols-2 gap-6">
-        <Link href="/thread/my-threads">
-          <Card className="flex flex-col items-center justify-center p-6 shadow-sm transition hover:border-amber-200 hover:shadow-lg">
-            <MessageSquare className="mb-2 h-10 w-10 text-amber-700" />
-            <p className="text-2xl font-bold">{threadCount}</p>
-            <p className="text-muted-foreground text-sm">Threads</p>
-          </Card>
-        </Link>
+        <Card className="flex flex-col items-center justify-center p-6 shadow-sm transition hover:border-amber-200 hover:shadow-lg">
+          <MessageSquare className="mb-2 h-10 w-10 text-amber-700" />
+          <p className="text-2xl font-bold">{threadCount}</p>
+          <p className="text-muted-foreground text-sm">Threads</p>
+        </Card>
 
         <Card className="flex flex-col items-center justify-center p-6 shadow-sm transition hover:border-amber-200 hover:shadow-lg">
           <FileText className="mb-2 h-10 w-10 text-amber-700" />

@@ -13,7 +13,6 @@ import deleteThread from '@/lib/serverActions/deleteThread'
 import Link from 'next/link'
 import deletePost from '@/lib/serverActions/deletePost'
 import deleteUser from '@/lib/serverActions/deleteUser'
-import promoteUser from '@/lib/serverActions/promoteUser'
 import DeleteCategory from '@/lib/serverActions/deleteCategory'
 
 export function PostDropdownMenuButton({ postId }: { postId: string }) {
@@ -40,7 +39,7 @@ export function PostDropdownMenuButton({ postId }: { postId: string }) {
           }}
           className="text-red-600"
         >
-          Thread löschen
+          Post löschen
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
@@ -87,11 +86,6 @@ export function UserDropdownMenuButton({ userId }: { userId: string }) {
     await deleteUser(userId)
     router.refresh()
   }
-  async function handlePromote() {
-    if (!confirm('Diesen Nutzer zum Admin ernennen?')) return
-    await promoteUser(userId)
-    router.refresh()
-  }
 
   return (
     <DropdownMenu>
@@ -102,14 +96,6 @@ export function UserDropdownMenuButton({ userId }: { userId: string }) {
       </DropdownMenuTrigger>
 
       <DropdownMenuContent align="end" className="w-48">
-        <DropdownMenuItem
-          onSelect={async (e) => {
-            e.preventDefault()
-            handlePromote()
-          }}
-        >
-          Nutzer befördern
-        </DropdownMenuItem>
         <DropdownMenuItem
           onSelect={async (e) => {
             e.preventDefault()

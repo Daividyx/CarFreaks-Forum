@@ -1,16 +1,7 @@
-/**
- *
- * LoginForm
- * Stellt das Formular dar, das der Nutzer zum Login benötigt
- * Ereldig mittels BetterAuth die Authentifizierungslogik und meldet den Nutzer an
- *
- */
 'use client'
 
 import Link from 'next/link'
-
 import { useState } from 'react'
-
 import { authClient } from '@/lib/auth-client'
 import { useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/button'
@@ -19,35 +10,52 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@radix-ui/react-label'
 
 export default function LoginForm() {
+  // State-Variable, um das Passwort sichtbar/unsichtbar zu machen
   const [showPassword, setShowPassword] = useState(false)
-  const [isPending, setIsPending] = useState(false)
-  const [error, setError] = useState<string | null | undefined>(null)
-  const router = useRouter()
-  async function handleSubmit(e: React.FormEvent) {
-    e.preventDefault()
-    setIsPending(true)
-    setError(null)
 
+  // State-Variable, um den Ladezustand beim Login anzuzeigen
+  const [isPending, setIsPending] = useState(false)
+
+  // State-Variable für Fehlermeldungen
+  const [error, setError] = useState<string | null | undefined>(null)
+
+  // Router-Hook von Next.js, um nach erfolgreichem Login umzuleiten
+  const router = useRouter()
+
+  // Funktion, die beim Absenden des Formulars ausgeführt wird
+  async function handleSubmit(e: React.FormEvent) {
+    e.preventDefault() // Verhindert das Neuladen der Seite
+    setIsPending(true) // Zeigt an, dass die Anfrage läuft
+    setError(null) // Zurücksetzen von Fehlern
+
+    // Formulardaten auslesen
     const formData = new FormData(e.currentTarget as HTMLFormElement)
     const data = {
       email: formData.get('email')?.toString(),
       password: formData.get('password')?.toString(),
     }
+
+    // Falls E-Mail oder Passwort fehlt → Fehlermeldung ausgeben
     if (!data.email || !data.password) {
       setError('Bitte Email und Passwort eingeben')
       setIsPending(false)
       return
     }
-    // User einloggen mit Better Auth
+
+    // Login-Versuch über BetterAuth
     const { error } = await authClient.signIn.email({
       email: data.email,
       password: data.password,
     })
+
+    // Falls Fehler beim Login auftreten → Fehlermeldung anzeigen
     if (error) {
       setError(error.message)
       setIsPending(false)
       return
     }
+
+    // Wenn alles erfolgreich → zurücksetzen und zur Profilseite leiten
     setIsPending(false)
     router.push('/myProfile')
   }
@@ -56,17 +64,20 @@ export default function LoginForm() {
     <form onSubmit={handleSubmit}>
       <Card className="mx-auto my-20 flex max-w-md flex-col items-center">
         <CardTitle>Jetzt einloggen</CardTitle>
+
+        {/* Link zur Registrierungsseite */}
         <Link href="/register" className="hover:font-bold">
           <CardDescription>Noch kein Konto? Jetzt registrieren!</CardDescription>
         </Link>
+
         <CardContent className="space-y-4 py-6">
-          {/* Email */}
+          {/* Eingabefeld: E-Mail */}
           <div className="w-[300px] space-y-1">
             <Label className="px-2">Email Adresse</Label>
             <Input name="email" id="email" type="email" />
           </div>
 
-          {/* Passwort */}
+          {/* Eingabefeld: Passwort mit Umschalten zwischen Anzeigen/Verbergen */}
           <div className="w-[300px] space-y-1">
             <Label className="px-2">Passwort</Label>
             <div className="relative">
@@ -87,7 +98,7 @@ export default function LoginForm() {
             </div>
           </div>
 
-          {/* Login-Button */}
+          {/* Login-Button + Fehlermeldungsausgabe */}
           <div>
             <Button
               type="submit"

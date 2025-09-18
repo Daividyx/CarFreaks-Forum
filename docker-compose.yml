@@ -13,5 +13,20 @@ services:
     volumes:
       - dbdata:/var/lib/mysql
 
+  db_test:
+    container_name: carFreaksForumDatabaseTest
+    image: mysql:8.0
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: '${MYSQL_TEST_ROOT_PASSWORD}'
+      MYSQL_DATABASE: '${MYSQL_TEST_DATABASE}'
+      MYSQL_USER: '${MYSQL_TEST_USER}'
+      MYSQL_PASSWORD: '${MYSQL_TEST_PASSWORD}'
+    ports:
+      - '3307:3306'
+    volumes:
+      - dbdata_test:/var/lib/mysql
+
 volumes:
   dbdata:
+  dbdata_test:

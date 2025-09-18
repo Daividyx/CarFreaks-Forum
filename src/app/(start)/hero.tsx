@@ -4,12 +4,14 @@ import { headers } from 'next/headers'
 import Link from 'next/link'
 
 export default async function Hero() {
+  // Aktuelle Session abrufen
   const session = await auth.api.getSession({ headers: await headers() })
   const user = session?.user
+
   return (
     <section className="py-16">
       <div className="container mx-auto flex flex-col-reverse items-center justify-between gap-10 px-4 lg:flex-row">
-        {/* Textbereich */}
+        {/* Textbereich mit Überschrift, Beschreibung und Buttons */}
         <div className="max-w-xl text-center lg:text-left">
           <h1 className="text-4xl font-bold text-amber-800 md:text-5xl">
             Willkommen im CarFreaks Forum
@@ -18,22 +20,22 @@ export default async function Hero() {
             Diskutiere mit anderen Auto-Enthusiasten über Technik, Tuning, Kaufberatung & mehr. Ganz
             egal ob Neuling oder Profi – hier bist du richtig!
           </p>
-          {/** Prüft ob eine Session vorhanden ist.
-           * Wenn Session, dann Button -> neuer Thread
-           * Wenn !Session, Dann Button -> einloggen, registrieren
-           */}
+
+          {/* Sessionabhängige Anzeige */}
           {session ? (
+            // Wenn Nutzer eingeloggt ist → Button zum Erstellen eines neuen Threads
             <div className="mt-8 flex flex-col items-center">
               <h1 className="text-lg font-bold">
                 Beginne eine Diskussion, stelle eine Frage oder erzähl einfach einen Witz.
               </h1>
               <Link href={'/thread/new'}>
                 <Button className="bg-amber-800 text-white hover:bg-amber-900 hover:font-bold">
-                  Starte einen Thema
+                  Starte ein Thema
                 </Button>
               </Link>
             </div>
           ) : (
+            // Wenn Nutzer nicht eingeloggt ist → Buttons zum Login oder zur Registrierung
             <div className="mt-6 flex flex-col justify-center gap-4 sm:flex-row lg:justify-start">
               <Button asChild className="bg-amber-800 text-white hover:bg-amber-900">
                 <Link href="/login">Einloggen</Link>
@@ -49,7 +51,7 @@ export default async function Hero() {
           )}
         </div>
 
-        {/* Bildbereich */}
+        {/* Bildbereich mit Quelle */}
         <div className="hidden flex-shrink-0 md:block">
           <img
             src="Hero.jpg"

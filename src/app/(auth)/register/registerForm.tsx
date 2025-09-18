@@ -1,10 +1,9 @@
 'use client'
 
 import Link from 'next/link'
-
 import { useState } from 'react'
 
-import z, { ZodError } from 'zod'
+import z from 'zod'
 import { createUserShema } from '@/app/(auth)/register/createUserShema'
 import { authClient } from '@/lib/auth-client'
 
@@ -17,23 +16,29 @@ import { useRouter } from 'next/navigation'
 
 export default function RegisterForm() {
   const router = useRouter()
-  //const [state, formAction, isPending] = useActionState(CreateUser, undefined)
 
-  // States
+  // State zum Steuern der Sichtbarkeit der Passwortfelder
   const [showPassword, setShowPassword] = useState(false)
   const [showConfirmPassword, setShowConfirmPassword] = useState(false)
+
+  // State für Validierungs- und Server-Fehler
   const [errors, setErrors] = useState<Record<string, string[]>>({})
+
+  // Ladezustand (Button deaktivieren, mehrfaches Absenden verhindern)
   const [isPending, setIsPending] = useState(false)
 
-  //eigene Handle Submit funktion wird vom Formular aufgerufen
+  // Eigene Submit-Funktion für das Formular
   async function handleSubmit(e: React.FormEvent) {
     if (isPending) {
+      // Falls bereits ein Request läuft → Abbrechen
       return
     }
-    e.preventDefault() //neuladen verhindern
-    setErrors({}) // Error State clearen
-    setIsPending(true) // isPending auf true setzen
-    //Neues FormData Objekt erzeugen aus dem Event
+
+    e.preventDefault() // Seitenreload verhindern
+    setErrors({}) // Fehler zurücksetzen
+    setIsPending(true) // Ladezustand aktivieren
+
+    // Eingaben auslesen
     const formData = new FormData(e.currentTarget as HTMLFormElement)
     const data = {
       name: formData.get('name')?.toString(),
@@ -41,31 +46,34 @@ export default function RegisterForm() {
       password: formData.get('password')?.toString(),
       confirmPassword: formData.get('confirmPassword')?.toString(),
     }
-    // Daten validieren mit zod
-    //Wenn Fehler, dann Errors in den State speichern
-    const parsed = createUserShema.safeParse(data)
 
+    // Eingaben mit Zod prüfen
+    const parsed = createUserShema.safeParse(data)
     if (!parsed.success) {
+      // Fehler ins State speichern → im UI anzeigen
       setErrors(z.flattenError(parsed.error).fieldErrors)
       setIsPending(false)
       return
     }
 
-    //User Account erstellen mit betterAuth
+    // User bei BetterAuth registrieren
     const { error } = await authClient.signUp.email({
       name: parsed.data.name,
       email: parsed.data.email,
       password: parsed.data.password,
     })
+
+    // Falls Fehler zurückkommt → anzeigen
     if (error) {
       setErrors({ general: [error.message as string] })
       setIsPending(false)
       return
     }
 
-    //User mit Admin-Mail zum Admin machen
+    // Admin-Check ausführen (User mit admin@mail.com wird Admin, falls noch kein Admin existiert)
     await promoteToAdmin()
 
+    // Weiterleitung auf Profilseite
     router.push('/myProfile')
   }
 
@@ -73,25 +81,28 @@ export default function RegisterForm() {
     <form onSubmit={handleSubmit}>
       <Card className="mx-auto my-20 flex max-w-md flex-col items-center">
         <CardTitle> Jetzt registrieren</CardTitle>
+
+        {/* Link zur Login-Seite */}
         <Link href="/login" className="hover:font-bold">
           <CardDescription>Hast du schon eine Konto? Dann hier einloggen!</CardDescription>
         </Link>
+
         <CardContent className="space-y-4 py-6">
-          {/* Benutzername */}
+          {/* Eingabe: Benutzername */}
           <div className="w-[300px] space-y-1">
             <Label className="px-2">Benutzername</Label>
             <Input name="name" id="name" />
             {errors.name?.[0] && <p className="px-2 text-sm text-red-700">{errors.name[0]}</p>}
           </div>
 
-          {/* Email */}
+          {/* Eingabe: Email */}
           <div className="w-[300px] space-y-2">
             <Label className="px-2">Email Adresse</Label>
             <Input name="email" id="email" type="email" />
             {errors.email?.[0] && <p className="px-2 text-sm text-red-700">{errors.email[0]}</p>}
           </div>
 
-          {/* Passwort */}
+          {/* Eingabe: Passwort */}
           <div className="w-[300px] space-y-2">
             <Label className="px-2">Passwort</Label>
             <div className="relative">
@@ -115,7 +126,7 @@ export default function RegisterForm() {
             )}
           </div>
 
-          {/* Passwort bestätigen */}
+          {/* Eingabe: Passwort bestätigen */}
           <div className="w-[300px] space-y-2">
             <Label className="px-2">Passwort bestätigen</Label>
             <div className="relative">
@@ -148,6 +159,7 @@ export default function RegisterForm() {
             >
               Registrieren
             </Button>
+            {/* Allgemeine Fehlerausgabe */}
             {errors.general?.[0] && (
               <p className="px-2 text-sm text-red-700">{errors.general[0]}</p>
             )}

@@ -16,21 +16,24 @@ type Props = {
 
 export default async function CategoryPage({ params }: Props) {
   const { slug } = await Promise.resolve(params)
-  // Nur eingeloggte Nutzer haben Zugriff.
+
+  // Nur eingeloggte Nutzer haben Zugriff
   const session = await auth.api.getSession({
     headers: await headers(),
   })
 
   if (!session) {
+    // Wenn keine Session vorhanden → Weiterleitung
     redirect('/notAuthenticated')
   }
+
+  // Kategorie-Daten aus der Datenbank laden
 
   const category = await prisma.category.findUnique({
     where: { slug },
     include: {
       threads: {
         orderBy: { createdAt: 'desc' },
-
         include: {
           author: true,
           posts: true,
@@ -39,11 +42,12 @@ export default async function CategoryPage({ params }: Props) {
     },
   })
 
+  // Falls keine Kategorie gefunden wurde → 404
   if (!category) return notFound()
 
   return (
     <div className="mx-auto max-w-4xl p-6">
-      {/* Header */}
+      {/* Kopfbereich */}
       <div className="space-y-2">
         {/* Kategorie-Label */}
         <p className="text-md font-semibold tracking-wider text-amber-800 uppercase">Kategorie</p>
@@ -54,12 +58,11 @@ export default async function CategoryPage({ params }: Props) {
         {/* Beschreibung */}
         <p className="text-muted-foreground text-base">{category.description}</p>
 
-        {/* Anzahl Themen */}
+        {/* Anzahl Threads */}
         <div className="flex items-center gap-3 pt-2">
           <span className="h-1 w-12 rounded-full bg-amber-500/70" />
           <span className="text-muted-foreground text-xs">
-            {category.threads.length} Them
-            {category.threads.length === 1 ? '' : 'en'}
+            {category.threads.length} {category.threads.length === 1 ? 'Thema' : 'Themen'}
           </span>
         </div>
 
@@ -69,10 +72,12 @@ export default async function CategoryPage({ params }: Props) {
       {/* Thread-Liste */}
       <div className="mt-6 grid gap-4">
         {category.threads.length === 0 ? (
+          // Hinweis falls noch keine Threads existieren
           <div className="text-muted-foreground rounded-lg border p-6 text-center">
             Noch keine Threads in dieser Kategorie.
           </div>
         ) : (
+          // Alle Threads durchgehen und anzeigen
           category.threads.map((thread) => (
             <Link key={thread.id} href={`/thread/${thread.id}`} className="block">
               <ThreadCard thread={thread} />

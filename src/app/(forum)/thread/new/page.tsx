@@ -1,21 +1,24 @@
-import AuthRequiredPage from '@/app/(error)/notAuthenticated/page'
-
 import { prisma } from '@/database/prisma'
 import { auth } from '@/lib/auth'
 import { headers } from 'next/headers'
 import NewThreadForm from './newThreadForm'
+import { redirect } from 'next/navigation'
 
 export default async function NewThreadPage() {
-  const categories = await prisma.category.findMany({})
+  // Session abrufen → nur eingeloggte Nutzer dürfen neue Threads erstellen
   const session = await auth.api.getSession({
     headers: await headers(),
   })
-  const user = session?.user
 
-  if (!session || !user) {
-    return <AuthRequiredPage></AuthRequiredPage>
+  // Falls keine Session → Weiterleitung auf die "Nicht authentifiziert"-Seite
+  if (!session) {
+    redirect('/notAuthenticated')
   }
 
+  // Kategorien aus der Datenbank laden
+  const categories = await prisma.category.findMany({})
+
+  // Formular zum Erstellen eines neuen Threads anzeigen
   return (
     <div>
       <NewThreadForm categories={categories}></NewThreadForm>

@@ -1,6 +1,7 @@
 import CategoryCard from '@/components/cards/CategoryCard'
 import Link from 'next/link'
 
+// Typ für eine Kategorie mit Threads und deren Posts
 type category = {
   id: string
   name: string
@@ -22,6 +23,7 @@ type category = {
   }[]
 }
 
+// Props für die Komponente: Liste von Kategorien
 type categories = {
   categories: category[]
 }
@@ -30,22 +32,29 @@ export default function CategoryGrid({ categories }: categories) {
   return (
     <section className="flex flex-col gap-4">
       <h1 className="px-8 pb-6 text-2xl font-bold text-amber-800">Unsere Kategorien</h1>
-      {/** Durch die Kategorien Mappen und für Jede Kategorie eine Card erstellen */}
+      {/* Kategorien durchlaufen und pro Kategorie eine Card erzeugen */}
       {categories.map((cat) => {
+        // Anzahl der Threads in der Kategorie
         const threadCount = cat.threads.length
+
+        // Anzahl aller Posts in allen Threads summieren
         const postCount = cat.threads.reduce((sum, t) => sum + t.posts.length, 0)
 
-        const latestThread = [...cat.threads].sort(
-          (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-        )[0]
+        // Neuesten Thread anhand des Datums bestimmen
+        const latestThread = cat.threads.reduce(
+          (latest, current) => (!latest || current.createdAt > latest.createdAt ? current : latest),
+          undefined as (typeof cat.threads)[number] | undefined
+        )
 
-        const latestThreadTitle = latestThread?.title ?? '-'
-        const lastThreadDate = latestThread?.createdAt.toLocaleDateString('de-DE') ?? '-'
+        // Titel und Datum des neuesten Threads, mit Fallback wenn keine Threads existieren
+        const latestThreadTitle = latestThread?.title ?? 'Keine Threads vorhanden'
+        const lastThreadDate = latestThread
+          ? latestThread.createdAt.toLocaleDateString('de-DE')
+          : '-'
 
         return (
           <Link href={`/category/${cat.slug}`} key={cat.id}>
             <CategoryCard
-              key={cat.id}
               description={cat.description}
               posts={postCount}
               threads={threadCount}

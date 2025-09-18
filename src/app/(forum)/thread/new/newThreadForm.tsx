@@ -17,19 +17,27 @@ import {
 import CreateThread from '@/app/(forum)/thread/new/createThread'
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card'
 
+// Typ für eine Kategorie (kommt aus der DB)
 type category = {
   id: string
   name: string
   slug: string
   description: string
 }
+
+// Props für das Formular: Liste der Kategorien
 type NewThreadProp = {
   categories: category[]
 }
 
 export default function NewThreadForm({ categories }: NewThreadProp) {
-  //State
+  // useActionState:
+  // - state: enthält evtl. Rückgaben oder Fehler von CreateThread
+  // - formAction: wird als action ins Formular gegeben
+  // - isPending: zeigt an, ob die Anfrage gerade läuft
   const [state, formAction, isPending] = useActionState(CreateThread, undefined)
+
+  // State für die aktuell ausgewählte Kategorie
   const [selected, setSelected] = useState('')
 
   return (
@@ -57,31 +65,39 @@ export default function NewThreadForm({ categories }: NewThreadProp) {
                   ))}
                 </SelectContent>
               </Select>
+              {/* Fehleranzeige für Kategorie */}
               {state?.fieldErrors?.categoryId && (
                 <p className="text-destructive">{state?.fieldErrors?.categoryId}</p>
               )}
             </div>
-            {/* HiddenInput für selected Category */}
+
+            {/* HiddenInput für die gewählte Kategorie 
+                → notwendig, damit der Wert mitgesendet wird */}
             <div className="space-y-2">
-              <Input name="categoryId" value={selected} hidden />
+              <Input name="categoryId" value={selected} required hidden />
             </div>
-            {/* Titel */}
+
+            {/* Eingabe: Titel */}
             <div className="space-y-2">
               <Label>Titel</Label>
               <Input name="title" placeholder="Titel deines Threads" />
+              {/* Fehleranzeige für Titel */}
               {state?.fieldErrors?.title && (
                 <p className="text-destructive">{state?.fieldErrors?.title}</p>
               )}
             </div>
-            {/* Text */}
+
+            {/* Eingabe: Text */}
             <div className="space-y-2">
               <Label>Beitrag</Label>
               <Textarea name="text" placeholder="Schreibe hier deinen Beitrag..." rows={8} />
+              {/* Fehleranzeige für Text */}
               {state?.fieldErrors?.text && (
                 <p className="text-destructive">{state?.fieldErrors?.text}</p>
               )}
             </div>
-            {/* Button */}
+
+            {/* Button zum Absenden */}
             <div className="pt-4">
               <Button
                 disabled={isPending}

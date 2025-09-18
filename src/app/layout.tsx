@@ -1,7 +1,7 @@
 import { MobileNavbar, Navbar } from '@/components/layout/navbar'
 import './globals.css' // Globale CSS-Styles
 import Footer from '@/components/layout/footer'
-import SessionInfo from './(start)/sessionInfo'
+import SessionInfo from '../components/sessionInfo'
 
 {
   /* Hier darüber diverse Importe*/
@@ -18,7 +18,7 @@ export default async function RootLayout({
         {/* Globale Stylings inkl. Hintergrundfarbe*/}
         <Navbar /> {/* Navigation oben */}
         <MobileNavbar></MobileNavbar> {/* Navigation auf kleinen Geräten oben */}
-        <SessionInfo /> {/* Anzeige Login-Status */}
+        {/**<SessionInfo /> {/* Anzeige Login-Status */}
         <div className="max-h-screen flex-1 overflow-y-auto">{children}</div> {/* Hauptinhalt */}
         <Footer /> {/* Footer unten */}
       </body>
