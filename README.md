@@ -1,36 +1,58 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# CarFreaks Forum
 
-## Getting Started
+CarFreaks Forum is a full-stack community platform for car enthusiasts.  
+Built with **Next.js, Prisma, MySQL, Tailwind, and ShadCN UI**, it allows users to create threads, write posts, and interact in a modern forum environment.
 
-First, run the development server:
+## ✨ Features
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- 🔐 Authentication via **BetterAuth**
+- 👥 Roles: `USER` & `ADMIN`
+- 🗂️ Categories, Threads & Posts, Likes and Bookmarks
+- 🌱 Database seeding with demo data for testing
+- 🎨 Modern UI with **Tailwind + ShadCN**
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Installation
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Clone the repository and install dependencies:
 
-## Learn More
+    git clone <repo-url>
+    cd carfreaksforum
+    npm install
 
-To learn more about Next.js, take a look at the following resources:
+Start MySQL with Docker:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+    docker compose up -d
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Run migrations:
 
-## Deploy on Vercel
+    npx prisma migrate dev
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Usage
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Start the development server:
+
+    npm run dev
+
+Seed the database manually:
+
+    npm run prisma-seed
+
+### Seeder actions
+
+- Clears all tables
+- Creates default categories
+- Inserts demo users (password: `Testpasswort123.`)
+- Promotes `admin@mail.com` to **ADMIN**
+- Generates 2 threads per user
+- Adds 1 initial post + 4 extra posts per thread
+
+### Test users
+
+- **Admin** → `admin@mail.com` / `Testpasswort123.`
+- **Regular users** → e.g. `david@mail.com`, `lisa@mail.com`, .../ `Testpasswort123.`
+
+## License
+
+[MIT](https://choosealicense.com/licenses/mit/)
