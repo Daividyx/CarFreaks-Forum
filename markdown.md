@@ -5,6 +5,7 @@ carfreaksforum/ # Next.js + TypeScript Forumprojekt
 │
 ├── prisma/ # Datenbank-Layer (Prisma)
 │ ├── schema.prisma # Datenbank-Modelle & Relationen
+│ ├── seed.ts Skript zum seeden der Datenbank
 │ ├── weitere Interne Dateien für Prisma
 ├── src/
 │ ├── app/ # Hauptverzeichnis des Projekts
@@ -16,7 +17,6 @@ carfreaksforum/ # Next.js + TypeScript Forumprojekt
 │ │ ├── admin/ # Admin Seiten und Funktionen (CRUD Funktionalitäten für Kategorien, Threads und Posts)
 │ │ ├── (error)/ # Error Seiten (nicht eingeloggt, kein Admin)
 │ │ │── api/ # Interne Dateien für Better Auth
-│ │ ├── users/ # Temporäre Anzeige aller User zur Entwicklung
 │ │
 │ ├── components/ # Wiederverwendbare UI-Komponenten
 │ │ ├── layout/ # Layout-Bausteine (Navbar, Footer)
@@ -31,5 +31,6 @@ carfreaksforum/ # Next.js + TypeScript Forumprojekt
 │ │
 │ ├── database/ # Prisma instanz
 ├── docker-compose.yml # Docker Konfigurationsdatei
+├── .env Datei (Umgebungsvariablen für Docker, BetterAuth und Prisma)
 
 ```

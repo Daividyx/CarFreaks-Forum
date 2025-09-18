@@ -27,25 +27,6 @@ Check if Node and npm are installed:
     node -v
     npm -v
 
-You will need a .env file in the Project root for Docker and BetterAuth.
-It needs to contain at least the following.
-
-Docker Setup Variables
-
-    MYSQL_ROOT_PASSWORD=<rootPassword>
-    MYSQL_DATABASE=CarFreaksForumDatabase
-    MYSQL_USER=<userName>
-    MYSQL_PASSWORD=<DatabasePassword>
-
-Prisma Connection
-
-    DATABASE_URL="mysql://root:<rootPassword>@localhost:3306/CarFreaksForumDatabase"
-
-Better Auth Configuration
-
-    BETTER_AUTH_SECRET="<insertSuperSecretKeyHere>"
-    BETTER_AUTH_URL=http://localhost:3000
-
 ---
 
 ## Installation
