@@ -13,6 +13,22 @@ Built with **Next.js, Prisma, MySQL, Tailwind, and ShadCN UI**, it allows users 
 
 ---
 
+## 📋 Prerequisites
+
+Before you start, make sure you have installed:
+
+- [Node.js (>=18)](https://nodejs.org/)
+- [Docker Desktop](https://www.docker.com/products/docker-desktop/)
+- [Visual Studio Code](https://code.visualstudio.com/) (recommended editor)
+- [Git](https://git-scm.com/)
+
+Check if Node and npm are installed:
+
+    node -v
+    npm -v
+
+---
+
 ## Installation
 
 Clone the repository and install dependencies:
