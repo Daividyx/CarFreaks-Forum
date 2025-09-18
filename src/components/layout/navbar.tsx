@@ -48,21 +48,46 @@ export function Navbar() {
               Mein Profil
             </Link>
 
-            <Link className="hover:font-bold" href="/users">
+            {/**
+             * User Seite ausschließlich zu Testzwecken verwendet und in der Finalen Version auskommentiert
+             * <Link className="hover:font-bold" href="/users">
               Users
             </Link>
+            */}
             {userRole === 'ADMIN' && (
               <Link className="hover:font-bold" href="/admin">
                 Admin Dashboard
               </Link>
             )}
           </div>
+          {/** Buttons abhängig von User Status
+           * Eingeloggt - "Starte ein Thema" & "Logout"
+           * Nicht eingelloggt - "Einloggen" & Registrieren
+           */}
           {session ? (
-            <Button onClick={handleLogout}>Logout</Button>
+            <div className="flex gap-4">
+              <Button
+                asChild
+                className="bg-amber-800 text-white hover:bg-amber-900 hover:font-bold"
+              >
+                <Link href="/thread/new">Starte ein Thema</Link>
+              </Button>
+              <Button className="bg-black text-white hover:font-bold" onClick={handleLogout}>
+                Logout
+              </Button>
+            </div>
           ) : (
-            <Button asChild>
-              <Link href="/login">Log in!</Link>
-            </Button>
+            <div className="flex gap-4">
+              <Button
+                className="bg-amber-800 text-white hover:bg-amber-900 hover:font-bold"
+                asChild
+              >
+                <Link href="/login">Log in!</Link>
+              </Button>
+              <Button className="bg-black text-white hover:font-bold" asChild>
+                <Link href="/register">Registrieren!</Link>
+              </Button>
+            </div>
           )}
         </div>
       </div>
@@ -93,47 +118,66 @@ export function MobileNavbar() {
               </Button>
             </SheetTrigger>
 
-            <SheetContent side="left" className="w-60 bg-yellow-400">
+            <SheetContent side="left" className="w-70 bg-yellow-400">
               <SheetHeader className="text-center">
-                <SheetTitle className="text-lg">CarFreaks Menü</SheetTitle>
+                <SheetTitle className="text-lg font-bold">CarFreaks Menü</SheetTitle>
               </SheetHeader>
 
               <nav className="mt-4 flex flex-col gap-3 p-4">
                 <Link href="/" className="hover:font-bold">
                   Startseite
                 </Link>
-                <Link href="/thread/my-threads" className="hover:font-bold">
+                <Link href="/my-threads" className="hover:font-bold">
                   Meine Themen
                 </Link>
-                <Link href="/thread/savedThreads" className="hover:font-bold">
+                <Link href=" /savedThreads" className="hover:font-bold">
                   Gespeicherte Themen
                 </Link>
                 <Link href="/myProfile" className="hover:font-bold">
                   Mein Profil
                 </Link>
-                <Link href="/users" className="hover:font-bold">
-                  Users
-                </Link>
+                {/**
+             * User Seite ausschließlich zu Testzwecken verwendet und in der Finalen Version auskommentiert
+             * <Link className="hover:font-bold" href="/users">
+              Users
+            </Link>
+            */}
                 {userRole === 'ADMIN' && (
                   <Link href="/admin" className="hover:font-bold">
                     Admin Dashboard
                   </Link>
                 )}
+
+                {/** Buttons abhängig von User Status
+                 * Eingeloggt - "Starte ein Thema" & "Logout"
+                 * Nicht eingelloggt - "Einloggen" & Registrieren
+                 */}
+                {session ? (
+                  <div className="mt-10 flex flex-col gap-4">
+                    <Button
+                      asChild
+                      className="bg-amber-800 text-white hover:bg-amber-900 hover:font-bold"
+                    >
+                      <Link href="/thread/new">Starte ein Thema</Link>
+                    </Button>
+                    <Button className="bg-black text-white hover:font-bold" onClick={handleLogout}>
+                      Logout
+                    </Button>
+                  </div>
+                ) : (
+                  <div className="flex gap-4">
+                    <Button
+                      className="bg-amber-800 text-white hover:bg-amber-900 hover:font-bold"
+                      asChild
+                    >
+                      <Link href="/login">Log in!</Link>
+                    </Button>
+                    <Button className="bg-black text-white hover:font-bold" asChild>
+                      <Link href="/register">Registrieren!</Link>
+                    </Button>
+                  </div>
+                )}
               </nav>
-              {session ? (
-                <Button className="ml-20 w-20" onClick={handleLogout}>
-                  Logout
-                </Button>
-              ) : (
-                <div className="flex gap-2">
-                  <Button variant="ghost" asChild className="flex-1">
-                    <Link href="/login">Login</Link>
-                  </Button>
-                  <Button asChild className="flex-1">
-                    <Link href="/register">Registrieren</Link>
-                  </Button>
-                </div>
-              )}
             </SheetContent>
           </Sheet>
         </div>

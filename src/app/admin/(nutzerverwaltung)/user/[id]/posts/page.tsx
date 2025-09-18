@@ -39,7 +39,6 @@ export default async function UserPostsPage({ params }: Props) {
       },
     },
     orderBy: { createdAt: 'desc' },
-    take: 100, // Limit zur Performance-Optimierung
   })
 
   // Hinweis, wenn keine Posts existieren
