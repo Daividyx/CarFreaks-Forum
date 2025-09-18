@@ -17,7 +17,7 @@ Built with **Next.js, Prisma, MySQL, Tailwind, and ShadCN UI**, it allows users 
 
 Clone the repository and install dependencies:
 
-    git clone <repo-url>
+    git clone https://github.com/Daividyx/CarFreaks-Forum
     cd carfreaksforum
     npm install
 
