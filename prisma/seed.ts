@@ -1,5 +1,4 @@
 import { PrismaClient } from '@/generated/prisma'
-import { categories } from './categories'
 import { auth } from '@/lib/auth'
 
 const prisma = new PrismaClient()
@@ -17,6 +16,40 @@ const users = [
   { name: 'Sophie', email: 'sophie@mail.com', password: 'Testpasswort123.' },
   { name: 'Paul', email: 'paul@mail.com', password: 'Testpasswort123.' },
 ]
+// Category Data
+const categories = [
+  {
+    name: 'Allgemein',
+    description: 'Alles über allgemeine Themen',
+    slug: 'allgemein',
+  },
+  {
+    name: 'Polizei',
+    description: 'Alles über Themen mit der Polizei',
+    slug: 'polizei',
+  },
+  {
+    name: 'Tuning',
+    description: 'Alles zum Tuning',
+    slug: 'tuning',
+  },
+  {
+    name: 'Treffen',
+    description: 'Verabredungen, Organisation von Treffen',
+    slug: 'treffen',
+  },
+  {
+    name: 'Kaufberatung',
+    description: 'Hilfe beim Kauf und Verkauf von Fahrzeugen',
+    slug: 'kaufberatung',
+  },
+  {
+    name: 'Off-Topic',
+    description: 'Alles was nichts mit Autos zu tun hat',
+    slug: 'offTopic',
+  },
+]
+// Admin Email
 const adminEmail = 'admin@mail.com'
 
 // Main
